@@ -18,9 +18,11 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * affiche le numero d'identification de l'animal et le numero de portee LOOF.
  * Une fiche chaton ne peut donc pas etre publiee tant que ces deux numeros sont vides :
  * elle reste en brouillon. La regle est appliquee a trois niveaux —
- *   1. estPubliable() ici,
- *   2. KittenObserver qui repasse est_publie a false a chaque enregistrement,
- *   3. le scope publies() utilise par toutes les requetes du site public.
+ *   1. estPubliable() ici, la regle exprimee en PHP ;
+ *   2. KittenObserver qui repasse est_publie a false a chaque enregistrement ;
+ *   3. le scope publies(), qui revalide la condition en SQL a chaque lecture
+ *      publique. C'est lui qui rattrape ce que l'observer ne peut pas voir :
+ *      les mises a jour de masse et un numero de portee vide apres coup.
  * Ne pas contourner : c'est la raison d'etre de ce champ.
  */
 class Kitten extends Model
@@ -105,9 +107,35 @@ class Kitten extends Model
         return $this->poids_g ? number_format($this->poids_g, 0, ',', ' ').' g' : null;
     }
 
+    /**
+     * Les fiches publiees ET reellement publiables.
+     *
+     * Le drapeau est_publie ne suffit pas : il est maintenu par KittenObserver,
+     * qui n'ecoute que les enregistrements Eloquent. Une mise a jour de masse
+     * — Kitten::query()->update(...), une action groupee du back-office —
+     * le contourne, et vider loof_portee_numero cote Litter ne repasse aucun
+     * chaton en brouillon. La condition legale est donc revalidee ici, a la
+     * lecture : le drapeau ne peut plus mentir, quel que soit le chemin
+     * d'ecriture qui l'a pose.
+     */
     public function scopePublies($query)
     {
-        return $query->where('est_publie', true);
+        return $query->publiables()->where('est_publie', true);
+    }
+
+    /**
+     * La seule condition legale, sans le drapeau : le miroir SQL de estPubliable().
+     * Sert aussi au back-office pour lister les fiches pretes a etre publiees.
+     * Les deux doivent rester d'accord — c'est ce que verifie KittenPublicationTest.
+     */
+    public function scopePubliables($query)
+    {
+        return $query
+            ->whereNotNull('icad_numero')
+            ->where('icad_numero', '<>', '')
+            ->whereHas('litter', fn ($q) => $q
+                ->whereNotNull('loof_portee_numero')
+                ->where('loof_portee_numero', '<>', ''));
     }
 
     public function scopeDisponibles($query)

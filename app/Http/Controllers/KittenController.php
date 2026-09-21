@@ -43,7 +43,10 @@ class KittenController extends Controller
      */
     public function show(Kitten $kitten)
     {
-        abort_unless($kitten->est_publie, 404);
+        // Le drapeau seul ne suffit pas : on revalide la regle legale sur la fiche
+        // resolue, pour que le 404 tienne meme si est_publie a ete pose par un
+        // chemin qui contourne KittenObserver. Cf. Kitten::scopePublies().
+        abort_unless($kitten->est_publie && $kitten->estPubliable(), 404);
 
         $kitten->load(['litter.pere.healthTests', 'litter.mere.healthTests', 'litter.events', 'photos']);
 

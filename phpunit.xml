@@ -19,6 +19,11 @@
     </source>
     <php>
         <env name="APP_ENV" value="testing"/>
+        <!-- APP_URL du .env contient le sous-dossier XAMPP (/bengals-parc/public).
+             Apache l'absorbe via le document root, mais le client de test s'en sert
+             comme prefixe de chemin : sans cette ligne, toute requete de test tombe
+             en 404 et les assertions negatives passent pour la mauvaise raison. -->
+        <env name="APP_URL" value="http://localhost"/>
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="BROADCAST_CONNECTION" value="null"/>
