@@ -85,6 +85,22 @@ class BackOfficeTest extends TestCase
             ->assertOk()
             ->assertSee('Retourner sur le site');
     }
+    /**
+     * Filament pose par defaut un encart affichant sa version et des liens vers
+     * sa documentation. Il n'a rien a faire sur le tableau de bord d'une cliente,
+     * et une reinstallation du panneau le remettrait sans prevenir.
+     */
+    public function test_le_tableau_de_bord_ne_fait_pas_la_promotion_de_filament(): void
+    {
+        $this->actingAs($this->eleveuse())
+            ->get('/admin')
+            ->assertOk()
+            // On vise les liens promotionnels de l'encart, pas le mot « Filament » :
+            // celui-ci apparait aussi dans les noms de classes PHP que Livewire
+            // serialise dans la page, invisibles pour l'utilisateur.
+            ->assertDontSee('filamentphp.com', escape: false)
+            ->assertDontSee('github.com/filamentphp', escape: false);
+    }
     public function test_le_back_office_est_ferme_aux_visiteurs(): void
     {
         $this->seed();
