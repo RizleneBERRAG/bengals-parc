@@ -9,13 +9,16 @@ use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class ReviewsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
-            ->defaultSort('ordre')
+            // Deux criteres : les avis en attente d'abord, puis l'ordre d'affichage.
+            // defaultSort() n'en accepte qu'un seul, d'ou le tri sur la requete.
+            ->modifyQueryUsing(fn (Builder $query) => $query->orderBy('est_publie')->orderBy('ordre'))
             ->columns([
                 TextColumn::make('prenom')
                     ->label('Prénom')
@@ -38,11 +41,22 @@ class ReviewsTable
                     ->placeholder('—')
                     ->sortable(),
 
+                // Un avis depose par un visiteur et non publie n'est pas « masque » :
+                // il attend une relecture. La nuance change ce qu'on en fait.
                 TextColumn::make('est_publie')
                     ->label('État')
                     ->badge()
-                    ->state(fn (Review $avis) => $avis->est_publie ? 'Affiché' : 'Masqué')
-                    ->color(fn (Review $avis) => $avis->est_publie ? 'success' : 'gray'),
+                    ->state(fn (Review $avis) => match (true) {
+                        $avis->est_publie           => 'Affiché',
+                        $avis->source === 'site'    => 'En attente',
+                        default                     => 'Masqué',
+                    })
+                    ->color(fn (Review $avis) => match (true) {
+                        $avis->est_publie        => 'success',
+                        $avis->source === 'site' => 'warning',
+                        default                  => 'gray',
+                    })
+                    ->description(fn (Review $avis) => $avis->source === 'site' ? 'déposé sur le site' : null),
             ])
             ->filters([
                 TernaryFilter::make('est_publie')

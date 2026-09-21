@@ -141,31 +141,104 @@
 
 {{-- ---------------- avis ---------------- --}}
 {{--
-    Avis repris de la fiche Google de l'elevage, saisis dans le back-office.
-    Deux regles tenues ici :
-    - prenom seul, jamais de nom de famille, comme l'annonce la page Mentions legales ;
-    - le lien vers la fiche Google reste visible, pour que le lecteur verifie la
-      source lui-meme plutot que de nous croire sur parole.
-    Pas de balisage schema.org Review : les regles de Google interdisent de
-    republier en donnees structurees des avis collectes sur une autre plateforme.
+    Temoignages de familles adoptantes, saisis dans le back-office ou deposes
+    ici par les visiteurs. Trois regles tenues :
+    - prenom seul, jamais de nom de famille, comme l'annonce la page Mentions
+      legales — la table n'a d'ailleurs pas de colonne pour un nom ;
+    - un avis depose arrive en attente et ne parait qu'apres relecture ;
+    - pas de balisage schema.org Review : les regles de Google reservent les
+      donnees structurees aux avis collectes par le site lui-meme, et un
+      AggregateRating auto-declare se paie d'une penalite plutot que d'etoiles.
 --}}
-@if($avis->isNotEmpty())
-<section class="band paper tight">
+<section class="band paper tight" id="avis">
     <div class="wrap">
         <x-section-head
             eyebrow="Ils sont passés par là"
             titre="Ce que disent les familles"
-            lede="Avis publiés sur la fiche Google de l'élevage, repris ici avec l'accord de leurs auteurs. Prénom seul — aucun nom de famille n'est publié sur ce site." />
+            lede="Témoignages de familles adoptantes, publiés avec leur accord. Prénom seul — aucun nom de famille n'est publié sur ce site." />
 
-        <div class="cells">
-            @foreach($avis as $a)
-                <div class="cell-b">
-                    <span class="n">{{ $a->etoiles() }}</span>
-                    <p>{{ $a->texte }}</p>
-                    <span class="n" style="margin-top:auto">{{ $a->prenom }}@if($a->publie_le) · {{ $a->publie_le->translatedFormat('F Y') }}@endif</span>
+        @if($avis->isNotEmpty())
+            <div class="cells">
+                @foreach($avis as $a)
+                    <div class="cell-b">
+                        <span class="n">{{ $a->etoiles() }}</span>
+                        <p>{{ $a->texte }}</p>
+                        <span class="n" style="margin-top:auto">{{ $a->prenom }}@if($a->publie_le) · {{ $a->publie_le->translatedFormat('F Y') }}@endif</span>
+                    </div>
+                @endforeach
+            </div>
+        @endif
+
+        @if(session('succes_avis'))
+            <p class="flash" style="margin-top:26px">{{ session('succes_avis') }}</p>
+        @endif
+
+        @if($errors->avis->any())
+            <div class="flash err" style="margin-top:26px">
+                Votre avis n'a pas pu être envoyé :
+                <ul>
+                    @foreach($errors->avis->all() as $erreur)
+                        <li>{{ $erreur }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <details class="depot" @if(session('succes_avis') || $errors->avis->any()) open @endif>
+            <summary>Vous avez adopté chez nous ? Laissez votre avis</summary>
+
+            <form class="demo" method="POST" action="{{ route('reviews.store') }}">
+                @csrf
+
+                {{-- Piege a robots : invisible pour un humain. --}}
+                <div style="position:absolute;left:-9999px" aria-hidden="true">
+                    <label for="a-site">Site</label>
+                    <input type="text" id="a-site" name="site" tabindex="-1" autocomplete="off">
                 </div>
-            @endforeach
-        </div>
+
+                <div class="field">
+                    <label for="a-prenom">Prénom</label>
+                    <input id="a-prenom" name="prenom" type="text" autocomplete="given-name"
+                           value="{{ old('prenom') }}" maxlength="80" required>
+                </div>
+
+                <div class="field">
+                    <label for="a-note">Note</label>
+                    <select id="a-note" name="note" required>
+                        @foreach([5 => '★★★★★', 4 => '★★★★☆', 3 => '★★★☆☆', 2 => '★★☆☆☆', 1 => '★☆☆☆☆'] as $v => $libelle)
+                            <option value="{{ $v }}" @selected((int) old('note', 5) === $v)>{{ $libelle }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="field full" style="grid-column:1/-1">
+                    <label for="a-email">Email <span style="text-transform:none;letter-spacing:0">— facultatif, jamais publié</span></label>
+                    <input id="a-email" name="email" type="email" autocomplete="email"
+                           value="{{ old('email') }}" maxlength="150"
+                           placeholder="Pour vous recontacter si nous avons une question">
+                </div>
+
+                <div class="field full" style="grid-column:1/-1">
+                    <label for="a-texte">Votre avis</label>
+                    <textarea id="a-texte" name="texte" maxlength="1500" required
+                              placeholder="Votre expérience avec l'élevage : la préparation, la visite, l'arrivée du chaton chez vous.">{{ old('texte') }}</textarea>
+                </div>
+
+                <label class="consent" for="a-rgpd">
+                    <input type="checkbox" id="a-rgpd" name="rgpd" value="1" @checked(old('rgpd'))>
+                    <span>
+                        J'accepte que mon avis soit publié sur ce site sous mon prénom seul, et que
+                        Bengal's Parc conserve mon adresse email si je l'ai renseignée, uniquement pour
+                        me recontacter. Mon avis est relu avant publication.
+                        <a href="{{ route('legal') }}">Politique de confidentialité</a>
+                    </span>
+                </label>
+
+                <div class="btnrow" style="grid-column:1/-1">
+                    <button class="btn" type="submit">Envoyer mon avis</button>
+                </div>
+            </form>
+        </details>
 
         @if($avisGoogle = \App\Models\Setting::get('contact.avis_google'))
             <p style="margin-top:24px">
@@ -176,7 +249,7 @@
         @endif
     </div>
 </section>
-@endif
+
 {{-- ---------------- carte ---------------- --}}
 <section class="band ink2 tight">
     <div class="wrap">

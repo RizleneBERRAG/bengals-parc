@@ -24,6 +24,13 @@ class ReviewForm
                         // Pas de champ « nom » : la page Mentions legales s'engage a ne
                         // publier les temoignages que sous le prenom seul. La contrainte
                         // est dans le schema, pas seulement dans la consigne.
+                        TextInput::make('email')
+                            ->label('Email de l’auteur')
+                            ->helperText('Renseigné par le visiteur s’il a déposé son avis sur le site. Jamais affiché.')
+                            ->email()
+                            ->maxLength(150)
+                            ->columnSpanFull(),
+
                         TextInput::make('prenom')
                             ->label('Prénom')
                             ->helperText('Prénom seul. Aucun nom de famille n’est publié sur le site.')

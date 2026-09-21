@@ -24,13 +24,87 @@ class AvisTest extends TestCase
         ], $attributs));
     }
 
-    public function test_la_section_n_apparait_pas_sans_avis(): void
+    /**
+     * La section reste affichee sans aucun avis : elle porte le formulaire de
+     * depot, qui doit rester accessible meme quand il n'y a rien a montrer.
+     * Seules les cartes disparaissent.
+     */
+    public function test_sans_avis_la_section_reste_mais_sans_carte(): void
     {
         $this->seed();
 
         $this->get('/contact')
             ->assertOk()
-            ->assertDontSee('Ce que disent les familles');
+            ->assertSee('Ce que disent les familles')
+            ->assertSee('Laissez votre avis')
+            ->assertDontSee('cell-b');
+    }
+
+    public function test_un_avis_depose_arrive_en_attente_et_ne_parait_pas(): void
+    {
+        $this->seed();
+
+        $this->post('/avis', [
+            'prenom' => 'Marion',
+            'note'   => 5,
+            'texte'  => 'Nous avons adopté Nala il y a un mois, tout s’est très bien passé du début à la fin.',
+            'rgpd'   => '1',
+        ])->assertRedirect();
+
+        $avis = Review::where('prenom', 'Marion')->firstOrFail();
+
+        $this->assertFalse($avis->est_publie, 'Un avis déposé ne doit jamais paraître sans relecture.');
+        $this->assertSame('site', $avis->source);
+        $this->assertNotNull($avis->consentement_le, 'Le consentement doit être horodaté.');
+
+        // On vise le TEXTE de l'avis et non le prenom : le message de
+        // confirmation dit « Merci Marion », ce qui est voulu et ne constitue
+        // pas une publication.
+        $this->get('/contact')
+            ->assertSee('votre avis est bien arrivé', escape: false)
+            ->assertDontSee('adopté Nala', escape: false);
+    }
+
+    public function test_l_accord_de_publication_est_obligatoire(): void
+    {
+        $this->seed();
+
+        $this->post('/avis', [
+            'prenom' => 'Sans accord',
+            'note'   => 5,
+            'texte'  => 'Un texte assez long pour passer la longueur minimale demandée par le formulaire.',
+        ])->assertSessionHasErrors('rgpd', null, 'avis');
+
+        $this->assertSame(0, Review::where('prenom', 'Sans accord')->count());
+    }
+
+    public function test_le_piege_a_robots_bloque_le_depot(): void
+    {
+        $this->seed();
+
+        $this->post('/avis', [
+            'prenom' => 'Robot',
+            'note'   => 5,
+            'texte'  => 'Un texte assez long pour passer la longueur minimale demandée par le formulaire.',
+            'rgpd'   => '1',
+            'site'   => 'https://spam.test',
+        ])->assertSessionHasErrors('site', null, 'avis');
+
+        $this->assertSame(0, Review::where('prenom', 'Robot')->count());
+    }
+
+    /**
+     * Les erreurs du formulaire d'avis ne doivent pas s'afficher sous le
+     * formulaire de contact : la page en porte deux, chacun son sac d'erreurs.
+     */
+    public function test_les_erreurs_ne_debordent_pas_sur_l_autre_formulaire(): void
+    {
+        $this->seed();
+
+        $reponse = $this->post('/avis', ['prenom' => '', 'note' => 5, 'texte' => 'court']);
+
+        $reponse->assertSessionHasErrors(['prenom', 'texte'], null, 'avis');
+        $reponse->assertSessionDoesntHaveErrors(['prenom', 'texte']);
     }
 
     public function test_un_avis_publie_s_affiche(): void

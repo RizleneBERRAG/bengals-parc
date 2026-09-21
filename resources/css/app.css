@@ -374,6 +374,16 @@ form.demo .full{grid-column:1/-1}
 .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--bronze);outline:none}
 .consent{display:flex;gap:12px;align-items:flex-start;font-size:.83rem;color:var(--sepia-dim);grid-column:1/-1;line-height:1.6}
 .consent input{margin-top:3px;width:16px;height:16px;accent-color:var(--bronze);flex:none}
+
+/* Dépôt d'un avis : replié par défaut, pour proposer sans encombrer. */
+.depot{margin-top:32px;border-top:1px solid var(--rule-paper);padding-top:22px}
+.depot>summary{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--bronze-dim);cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:9px}
+.depot>summary::-webkit-details-marker{display:none}
+.depot>summary::before{content:'+';font-size:15px;line-height:1;width:9px}
+.depot[open]>summary::before{content:'–'}
+.depot>summary:hover,.depot>summary:focus-visible{color:var(--bronze)}
+.depot form.demo{margin-top:24px}
 .formnote{grid-column:1/-1;font-size:.82rem;color:var(--sepia-dim);border-left:2px solid var(--bronze);padding-left:15px;line-height:1.6}
 
 /* ---------- legal grid ---------- */

@@ -5,6 +5,7 @@ use App\Http\Controllers\CatController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\KittenController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/',                        [PageController::class, 'home'])->name('home');
@@ -22,6 +23,10 @@ Route::get('/contact',                 [ContactController::class, 'show'])->name
 Route::post('/contact', [ContactController::class, 'store'])
     ->middleware('throttle:5,60')   // 5 messages par heure et par IP
     ->name('contact.store');
+Route::post('/avis', [ReviewController::class, 'store'])
+    ->middleware('throttle:3,60')   // 3 avis par heure et par IP
+    ->name('reviews.store');
+
 Route::get('/mentions-legales',        [PageController::class, 'legal'])->name('legal');
 
 Route::get('/adopter',                 [AdoptionController::class, 'create'])->name('adoption.create');

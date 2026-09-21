@@ -30,6 +30,24 @@ class ReviewResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedStar;
 
+    /** Le nombre d'avis deposes par le site et pas encore relus. */
+    public static function getNavigationBadge(): ?string
+    {
+        $enAttente = Review::enAttente()->count();
+
+        return $enAttente > 0 ? (string) $enAttente : null;
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'warning';
+    }
+
+    public static function getNavigationBadgeTooltip(): ?string
+    {
+        return 'Avis déposés par le site, en attente de relecture';
+    }
+
     public static function form(Schema $schema): Schema
     {
         return ReviewForm::configure($schema);

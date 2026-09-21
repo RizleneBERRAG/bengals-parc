@@ -19,15 +19,22 @@ class Review extends Model
     protected function casts(): array
     {
         return [
-            'publie_le'  => 'date',
-            'est_publie' => 'boolean',
-            'note'       => 'integer',
+            'publie_le'       => 'date',
+            'consentement_le' => 'datetime',
+            'est_publie'      => 'boolean',
+            'note'            => 'integer',
         ];
     }
 
     public function scopePublies($query)
     {
         return $query->where('est_publie', true)->orderBy('ordre');
+    }
+
+    /** Les avis deposes par le site et pas encore relus. */
+    public function scopeEnAttente($query)
+    {
+        return $query->where('est_publie', false)->where('source', 'site');
     }
 
     /** Les etoiles pleines, pour l'affichage. */
