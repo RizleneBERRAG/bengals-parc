@@ -135,6 +135,44 @@
     </div>
 </section>
 
+{{-- ---------------- avis ---------------- --}}
+{{--
+    Avis repris de la fiche Google de l'elevage, saisis dans le back-office.
+    Deux regles tenues ici :
+    - prenom seul, jamais de nom de famille, comme l'annonce la page Mentions legales ;
+    - le lien vers la fiche Google reste visible, pour que le lecteur verifie la
+      source lui-meme plutot que de nous croire sur parole.
+    Pas de balisage schema.org Review : les regles de Google interdisent de
+    republier en donnees structurees des avis collectes sur une autre plateforme.
+--}}
+@if($avis->isNotEmpty())
+<section class="band paper tight">
+    <div class="wrap">
+        <x-section-head
+            eyebrow="Ils sont passés par là"
+            titre="Ce que disent les familles"
+            lede="Avis publiés sur la fiche Google de l'élevage, repris ici avec l'accord de leurs auteurs. Prénom seul — aucun nom de famille n'est publié sur ce site." />
+
+        <div class="cells">
+            @foreach($avis as $a)
+                <div class="cell-b">
+                    <span class="n">{{ $a->etoiles() }}</span>
+                    <p>{{ $a->texte }}</p>
+                    <span class="n" style="margin-top:auto">{{ $a->prenom }}@if($a->publie_le) · {{ $a->publie_le->translatedFormat('F Y') }}@endif</span>
+                </div>
+            @endforeach
+        </div>
+
+        @if($avisGoogle = \App\Models\Setting::get('contact.avis_google'))
+            <p style="margin-top:24px">
+                <a class="tlink" href="{{ $avisGoogle }}" target="_blank" rel="noopener noreferrer">
+                    Voir tous les avis sur Google
+                </a>
+            </p>
+        @endif
+    </div>
+</section>
+@endif
 {{-- ---------------- carte ---------------- --}}
 <section class="band ink2 tight">
     <div class="wrap">

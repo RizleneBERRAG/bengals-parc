@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreContactMessage;
 use App\Models\ContactMessage;
+use App\Models\Review;
 
 class ContactController extends Controller
 {
@@ -12,6 +13,7 @@ class ContactController extends Controller
         return view('pages.contact', [
             'objets' => ContactMessage::OBJETS,
             'points' => config('bengal.carte'),
+            'avis'   => Review::publies()->get(),
         ]);
     }
 

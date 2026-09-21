@@ -49,7 +49,9 @@ class DemoNumeros extends Command
                   'legal.certificat' => 'CCAD-38-DEMO',
                   'legal.directeur' => "Bengal's Parc",
                   'legal.hebergeur' => 'À renseigner'] as $cle => $valeur) {
-            Setting::where('cle', $cle)->update(['valeur' => $reset ? null : $valeur]);
+            // Passer par le modele et non par une mise a jour de masse : c'est
+            // l'evenement d'enregistrement qui vide le cache des reglages.
+            Setting::where('cle', $cle)->first()?->update(['valeur' => $reset ? null : $valeur]);
         }
 
         Setting::all_cached();
