@@ -520,7 +520,13 @@ a.figure{display:block;overflow:hidden}
 .social-mark{width:38px;height:38px;display:grid;place-items:center;border-radius:50%;
   border:1px solid var(--bronze-dim);background:transparent;color:inherit;
   transition:transform .55s var(--ease),color .35s,border-color .35s,box-shadow .35s,background .35s}
-.social-mark svg{width:19px;height:19px;display:block}
+.social-mark svg{width:19px;height:19px;display:block;
+  transition:transform .55s var(--ease)}
+/* L'anneau pivote au survol, pas le glyphe : les regles de marque de Meta
+   interdisent d'incliner le logo Instagram. On annule donc sur le svg la
+   rotation appliquee a .social-mark. Angles a garder opposes. */
+.social:hover .social-mark svg,
+.social:focus-visible .social-mark svg{transform:rotate(-60deg)}
 .paper .social{color:var(--bronze-dim)}
 .paper .social-mark{border-color:var(--paper-3)}
 

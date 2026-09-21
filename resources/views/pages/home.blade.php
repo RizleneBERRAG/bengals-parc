@@ -92,7 +92,7 @@
         <div class="two off">
             <div class="overlap">
                 <figure class="a figure"><img src="{{ asset('images/cats/couple.webp') }}" alt="Uzumaki et Uanna, couple de Bengals" loading="lazy"></figure>
-                <figure class="b figure"><img src="{{ asset('images/cats/chatons-pile.webp') }}" alt="Chatons Bengal endormis" loading="lazy"></figure>
+                <figure class="b figure"><img src="{{ asset('images/cats/chatons-pile.webp') }}" alt="Deux chatons Bengal roulés l’un contre l’autre dans l’herbe" loading="lazy"></figure>
             </div>
             <div class="stack">
                 <span class="eyebrow">Notre façon de faire</span>
