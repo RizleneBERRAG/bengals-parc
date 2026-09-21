@@ -22,6 +22,7 @@
 <section class="band paper">
     <div class="wrap">
         <x-section-head
+            niveau="1"
             eyebrow="Questions fréquentes"
             titre="Ce qu'on nous demande le plus"
             lede="Les réponses complètes, y compris celles qui pourraient vous faire renoncer. On préfère que vous renonciez avant qu'après." />

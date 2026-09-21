@@ -158,4 +158,20 @@ return [
         ],
     ],
 
+    /*
+     * Anciennes adresses du site WordPress, relevees dans l'audit. La page 404
+     * s'en sert pour proposer la bonne destination au visiteur qui arrive d'un
+     * vieux lien ou d'un resultat de recherche perime. A completer le jour de la
+     * bascule par de vraies redirections 301.
+     */
+    'anciennes_urls' => [
+        'reproducteurs'  => 'cats.index',
+        'reproducteurs-2'=> 'cats.index',
+        'reservations'   => 'kittens.index',
+        'reservation'    => 'kittens.index',
+        'histoire-chats' => 'breed',
+        'la-race-bengal' => 'breed',
+        'galerie-photos' => 'gallery',
+    ],
+
 ];

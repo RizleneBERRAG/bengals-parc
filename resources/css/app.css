@@ -42,6 +42,10 @@ button{font:inherit;color:inherit}
 h1,h2,h3,h4{font-family:var(--display);font-weight:500;text-wrap:balance;margin:0;line-height:1.06}
 h1{font-size:clamp(2.8rem,7.6vw,6rem);letter-spacing:-.022em}
 h2{font-size:clamp(2rem,4.6vw,3.5rem);letter-spacing:-.014em}
+/* Le titre principal d'une page intérieure est un h1 pour le référencement,
+   mais il garde l'échelle d'un h2 : la hiérarchie visuelle de la maquette ne
+   dépend pas du niveau de balise. Le h1 pleine taille reste celui du hero. */
+.shead h1{font-size:clamp(2rem,4.6vw,3.5rem);letter-spacing:-.014em}
 h3{font-size:clamp(1.3rem,2.3vw,1.72rem);letter-spacing:-.008em}
 p{margin:0}
 em.it{font-style:italic;font-family:var(--display)}

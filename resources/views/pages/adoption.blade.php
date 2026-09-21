@@ -8,6 +8,7 @@
 <section class="band">
     <div class="wrap">
         <x-section-head
+            niveau="1"
             eyebrow="Adopter"
             titre="Le parcours d'adoption"
             lede="Quatre étapes, aucune surprise. La demande ne vous engage à rien : elle ouvre la discussion." />

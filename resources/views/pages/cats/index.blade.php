@@ -8,6 +8,7 @@
 <section class="band">
     <div class="wrap">
         <x-section-head
+            niveau="1"
             eyebrow="L'élevage"
             titre="Bengal's Parc"
             lede="Un élevage familial déclaré à la chambre d'agriculture, titulaire du certificat de capacité, installé à L'Isle d'Abeau, à vingt minutes de Lyon." />

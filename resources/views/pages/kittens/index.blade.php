@@ -8,6 +8,7 @@
 <section class="band">
     <div class="wrap">
         <x-section-head
+            niveau="1"
             eyebrow="Nos chatons"
             titre="{{ $portee->code }} — {{ $portee->pere?->nom }} × {{ $portee->mere?->nom }}"
             lede="Nés le {{ $portee->date_naissance->translatedFormat('j F Y') }}. {{ $portee->phraseDisponibilite() ? \Illuminate\Support\Str::ucfirst($portee->phraseDisponibilite()).', ' : '' }}identifiés, vaccinés, vermifugés et inscrits au LOOF." />

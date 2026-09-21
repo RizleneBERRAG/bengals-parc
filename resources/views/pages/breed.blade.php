@@ -8,6 +8,7 @@
 <section class="band">
     <div class="wrap">
         <x-section-head
+            niveau="1"
             eyebrow="La race"
             titre="Le Bengal"
             lede="Une robe sauvage sur un chat de salon. Ce qu'il faut savoir avant d'en accueillir un — y compris ce qui pourrait vous faire changer d'avis." />

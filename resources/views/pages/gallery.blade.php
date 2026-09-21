@@ -8,6 +8,7 @@
 <section class="band">
     <div class="wrap">
         <x-section-head
+            niveau="1"
             eyebrow="Galerie"
             titre="La vie à l'élevage"
             lede="Des photos prises au fil des mois, pas une séance shooting. Cliquez pour agrandir." />

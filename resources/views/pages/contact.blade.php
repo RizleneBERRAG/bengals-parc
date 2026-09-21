@@ -19,6 +19,7 @@
 <section class="band">
     <div class="wrap">
         <x-section-head
+            niveau="1"
             eyebrow="Contact"
             titre="Écrivez-nous, ou appelez"
             lede="Un appel vaut souvent mieux qu'un long formulaire — nous décrochons en soirée et le week-end. Si vous préférez écrire, tout est ci-dessous : réponse sous 48 heures." />

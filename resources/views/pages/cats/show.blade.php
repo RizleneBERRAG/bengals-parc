@@ -14,7 +14,7 @@
                 <span class="eyebrow">
                     <a href="{{ route('cats.index') }}" style="text-decoration:none">← L'élevage</a> · {{ $chat->role->libelle() }}
                 </span>
-                <h2>{{ $chat->nom }}</h2>
+                <h1>{{ $chat->nom }}</h1>
                 <p class="lede">{{ $chat->description }}</p>
             </div>
         </div>

@@ -15,9 +15,9 @@
                     <a href="{{ route('kittens.index') }}" style="text-decoration:none">← {{ $portee->code }}</a>
                     · Fiche {{ $chaton->reference }}
                 </span>
-                <h2 style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+                <h1 style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
                     {{ $chaton->nom }} <x-chip :statut="$chaton->statut" />
-                </h2>
+                </h1>
                 <p class="lede">{{ $chaton->description }}</p>
             </div>
         </div>

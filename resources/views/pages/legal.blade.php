@@ -8,6 +8,7 @@
 <section class="band">
     <div class="wrap" style="max-width:840px">
         <x-section-head
+            niveau="1"
             eyebrow="Informations légales"
             titre="Mentions légales &amp; confidentialité"
             lede="Les informations que tout site d'élevage doit publier. Les champs marqués « à compléter » attendent les numéros officiels." />
