@@ -15,26 +15,32 @@ class ContactController extends Controller
             'objets' => ContactMessage::OBJETS,
             'points' => config('bengal.carte'),
             'avis'   => Review::publies()->get(),
-            'itineraire' => self::itineraire(),
+            'itineraire' => self::itineraires(),
         ]);
     }
 
     /**
-     * Le lien d'itineraire. Par defaut il vise la COMMUNE et non l'adresse
-     * exacte : la page annonce que l'adresse est communiquee au rendez-vous, et
-     * un itineraire porte-a-porte la publierait. Un reglage permet de le
-     * remplacer, par exemple par la fiche Google de l'elevage.
+     * Les liens d'itineraire, un par application de navigation.
+     *
+     * Tous visent la COMMUNE et non l'adresse exacte : la page annonce que
+     * l'adresse est communiquee au rendez-vous, et un itineraire porte-a-porte
+     * la publierait d'un clic. Chaque lien peut etre remplace par un reglage,
+     * par exemple par la fiche Google de l'elevage.
+     *
+     * @return array<string,string>
      */
-    private static function itineraire(): string
+    private static function itineraires(): array
     {
-        if ($choisi = Setting::get('contact.itineraire')) {
-            return $choisi;
-        }
-
         $commune = trim(Setting::get('elevage.ville', "L'Isle d'Abeau").' '
             .Setting::get('elevage.code_postal', '38080').' France');
 
-        return 'https://www.google.com/maps/dir/?api=1&destination='.urlencode($commune);
+        return [
+            'commune' => $commune,
+            'google'  => Setting::get('contact.itineraire_google')
+                ?: 'https://www.google.com/maps/dir/?api=1&destination='.urlencode($commune),
+            'waze'    => Setting::get('contact.itineraire_waze')
+                ?: 'https://www.waze.com/ul?navigate=yes&q='.urlencode($commune),
+        ];
     }
 
     public function store(StoreContactMessage $request)
