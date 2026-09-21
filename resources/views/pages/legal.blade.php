@@ -32,6 +32,7 @@
                     <tr><th>Âge minimum</th><td>{{ \App\Models\Litter::SEMAINES_AVANT_CESSION }} semaines révolues</td></tr>
                     <tr><th>Identification</th><td>Puce électronique enregistrée à l'ICAD avant toute cession</td></tr>
                     <tr><th>Inscription</th><td>LOOF — pedigree remis à la famille, jamais en option</td></tr>
+                    <tr><th>Certificat d'engagement</th><td>Remis et signé au minimum 7 jours avant la cession. Ce délai de réflexion est incompressible : aucun chaton ne part avant son terme.</td></tr>
                     <tr><th>Documents remis</th><td>Certificat vétérinaire de bonne santé, carnet de vaccination, contrat de cession, document d'information sur les besoins de l'espèce</td></tr>
                     <tr><th>Reprise</th><td>Prévue au contrat, sans limite d'âge</td></tr>
                 </table>
@@ -43,7 +44,7 @@
                     <tr><th>Données collectées</th><td>Identité, coordonnées et informations sur le foyer, uniquement via le formulaire de pré-réservation</td></tr>
                     <tr><th>Finalité</th><td>Traiter la demande d'adoption et assurer le suivi du chaton</td></tr>
                     <tr><th>Base légale</th><td>Consentement, recueilli explicitement au dépôt de la demande</td></tr>
-                    <tr><th>Durée de conservation</th><td>{{ \App\Models\AdoptionRequest::MOIS_CONSERVATION }} mois après le dernier échange, puis suppression automatique</td></tr>
+                    <tr><th>Durée de conservation</th><td>{{ \App\Models\AdoptionRequest::MOIS_CONSERVATION }} mois après le dépôt de la demande, puis suppression automatique</td></tr>
                     <tr><th>Destinataires</th><td>Bengal's Parc uniquement — aucune transmission à un tiers, aucune revente</td></tr>
                     <tr><th>Vos droits</th><td>Accès, rectification, effacement et opposition sur simple demande à {{ \App\Models\Setting::get('contact.email') }}</td></tr>
                     <tr><th>Publication des noms</th><td>Aucun nom ni prénom d'adoptant n'est publié sur ce site</td></tr>

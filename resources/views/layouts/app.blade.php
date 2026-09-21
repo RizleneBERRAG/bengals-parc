@@ -17,9 +17,19 @@
         <meta property="og:image" content="@yield('og_image')">
     @endif
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..800;1,6..96,400..600&family=Archivo:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+    {{--
+        Polices auto-hebergees dans public/fonts. Plus aucun appel a
+        fonts.googleapis.com ni fonts.gstatic.com : la typographie tient donc
+        sans reseau — en demonstration chez l'eleveuse comme sur une connexion
+        mediocre. Les deux fichiers precharges sont ceux du premier ecran ;
+        crossorigin est obligatoire meme en same-origin, une police etant
+        toujours recuperee en mode CORS.
+    --}}
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+          href="{{ asset('fonts/bodoni-moda-normal-400-800-latin.woff2') }}">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+          href="{{ asset('fonts/archivo-normal-300-latin.woff2') }}">
+    <link rel="stylesheet" href="{{ asset('fonts/fonts.css') }}">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('head')
