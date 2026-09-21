@@ -199,11 +199,18 @@
                 <p class="small" style="font-size:.78rem">
                     Nous pouvons venir vous chercher à la gare de La Verpillière.
                 </p>
+                {{-- Vise la commune, pas l'adresse exacte : celle-ci n'est donnée
+                     qu'au rendez-vous, un itinéraire porte-à-porte la publierait. --}}
+                <a class="btn ghost" href="{{ $itineraire }}" target="_blank" rel="noopener noreferrer"
+                   style="margin-top:18px;width:100%;justify-content:center;padding:12px 18px;font-size:.84rem">
+                    Itinéraire sur Google Maps
+                </a>
             </div>
         </div>
 
         <p class="small" style="margin-top:16px">
-            Carte &copy; OpenStreetMap et CARTO. Aucun traceur publicitaire n'est chargé sur cette page.
+            Carte &copy; OpenStreetMap et CARTO. Aucun traceur publicitaire n'est chargé sur cette page :
+            le lien d'itinéraire ouvre Google Maps dans un nouvel onglet, rien n'est chargé depuis Google ici.
         </p>
     </div>
 </section>

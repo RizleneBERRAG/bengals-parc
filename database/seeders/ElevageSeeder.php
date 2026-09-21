@@ -70,6 +70,7 @@ class ElevageSeeder extends Seeder
             ['cle' => 'elevage.code_postal',  'libelle' => 'Code postal',              'valeur' => '38080',                    'groupe' => 'general'],
             ['cle' => 'elevage.departement',  'libelle' => 'Département',              'valeur' => 'Isère',                    'groupe' => 'general'],
             ['cle' => 'contact.telephone',    'libelle' => 'Téléphone',                'valeur' => '06 24 48 89 36',           'groupe' => 'contact'],
+            ['cle' => 'contact.itineraire',   'libelle' => 'Lien d’itinéraire (laisser vide = Google Maps vers la commune)', 'valeur' => null, 'groupe' => 'contact'],
             ['cle' => 'contact.avis_google',  'libelle' => 'Lien vers les avis Google', 'valeur' => null, 'groupe' => 'contact'],
             ['cle' => 'contact.email',        'libelle' => 'Email',                    'valeur' => 'bengalsparc@gmail.com',    'groupe' => 'contact'],
             ['cle' => 'contact.instagram',    'libelle' => 'Instagram',                'valeur' => 'https://www.instagram.com/bengals_parc/', 'groupe' => 'contact'],
