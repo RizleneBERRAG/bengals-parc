@@ -651,3 +651,55 @@ footer .social-mark{--mark-fond:var(--ink-2)}
 /* La bande panoramique (chatons en alerte) : on cadre un peu plus haut
    pour garder les têtes dans le champ malgré le recadrage vertical. */
 .photoband img{object-position:50% 34%}
+
+
+/* ------------------------------------------------------------------
+   Confort tactile
+
+   Mesuré au doigt sur les neuf pages : les liens de pied de page faisaient
+   15 px de haut, les tlink 21, le bouton Menu et les icônes sociales 38, les
+   zooms de la carte 30. En dessous de 44 px on rate sa cible, on tape le lien
+   d'à côté, et sur un site d'élevage on perd la demande d'adoption.
+
+   On agrandit la ZONE SENSIBLE, pas le dessin : padding, min-height, ou un
+   pseudo-élément invisible quand la forme ne doit pas bouger. Ciblé sur
+   (pointer: coarse) : rien ne change pour qui utilise une souris, quelle que
+   soit la largeur de la fenêtre.
+   ------------------------------------------------------------------ */
+@media (pointer: coarse){
+
+  footer ul{gap:0}
+  footer ul a{display:inline-block;padding-block:13px}
+
+  .tlink{padding-block:12px}
+
+  .burger{min-height:44px}
+
+  .social-mark{width:44px;height:44px}
+  .social-mark svg{width:21px;height:21px}
+
+  .filters a,.filters button{min-height:44px;display:inline-flex;align-items:center}
+
+  .depot>summary{padding-block:7px}
+
+  /* Les repères de « Lire une robe » restent petits à l'écran : le dessin fait
+     26 px et doit le rester pour ne pas masquer la robe. On étend seulement la
+     zone sensible, invisible. ::after est déjà pris par le point central. */
+  .hot::before{content:"";position:absolute;inset:-10px;border-radius:50%}
+
+  /* Téléphone et email dans les fiches « Nous joindre » : ce sont les deux liens
+     les plus utiles du site et ils faisaient 16 px. Seuls dans leur cellule,
+     leur zone peut grandir sans gêner un voisin. */
+  .record td a{display:inline-block;padding-block:12px}
+
+  /* Lien de la politique de confidentialité, au fil du texte de consentement :
+     padding modéré, la zone ne doit pas mordre sur la ligne au-dessus, qui
+     coche la case. */
+  .consent a{display:inline-block;padding-block:6px}
+
+  .brand{padding-block:4px}
+
+  /* Contrôles de zoom fournis à 26 px par Leaflet, dont la feuille est chargée
+     après celle-ci : il faut donc forcer. */
+  .leaflet-control-zoom a{width:40px !important;height:40px !important;line-height:40px !important}
+}
