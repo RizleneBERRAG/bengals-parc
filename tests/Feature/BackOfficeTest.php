@@ -78,6 +78,13 @@ class BackOfficeTest extends TestCase
         }
     }
 
+    public function test_le_lien_de_retour_vers_le_site_est_present(): void
+    {
+        $this->actingAs($this->eleveuse())
+            ->get('/admin')
+            ->assertOk()
+            ->assertSee('Retourner sur le site');
+    }
     public function test_le_back_office_est_ferme_aux_visiteurs(): void
     {
         $this->seed();
