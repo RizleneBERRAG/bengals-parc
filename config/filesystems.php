@@ -30,6 +30,23 @@ return [
 
     'disks' => [
 
+        /*
+         * Les photos du site vivent dans public/images/cats et la colonne
+         * photos.chemin stocke un chemin relatif a public/ ("images/cats/x.webp"),
+         * rendu par asset(). Ce disque permet au back-office d'y deposer des
+         * fichiers au meme endroit et dans la meme convention que les 36 photos
+         * deja en place, plutot que dans storage/app/public qui demanderait un
+         * lien symbolique et un autre format de chemin.
+         */
+        'site' => [
+            'driver' => 'local',
+            'root' => public_path(),
+            'url' => rtrim(env('APP_URL', 'http://localhost'), '/'),
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app/private'),

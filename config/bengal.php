@@ -147,4 +147,15 @@ return [
         ],
     ],
 
+    /*
+     * Qui a le droit d'entrer dans le back-office. Lu par User::canAccessPanel().
+     * Le site n'ouvre aucune inscription : ajouter une adresse ici est une
+     * decision, pas un effet de bord de la creation d'un compte.
+     */
+    'back_office' => [
+        'emails' => [
+            'bengalsparc@gmail.com',
+        ],
+    ],
+
 ];
