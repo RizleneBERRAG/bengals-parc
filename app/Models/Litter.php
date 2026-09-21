@@ -67,6 +67,28 @@ class Litter extends Model
         return $this->date_naissance?->diffInWeeks(now());
     }
 
+    /**
+     * La phrase de disponibilite, accordee au temps.
+     *
+     * « depuis » ne vaut que pour une date passee : tant que l'age legal de
+     * cession n'est pas atteint, annoncer un depart deja possible est faux.
+     * C'est exactement le reproche fait au site actuel du client, qui affiche
+     * encore des chatons de mars 2025 comme une actualite — le nouveau site ne
+     * peut pas se permettre le meme decalage.
+     */
+    public function phraseDisponibilite(): ?string
+    {
+        if (! $this->date_disponibilite) {
+            return null;
+        }
+
+        $date = $this->date_disponibilite->translatedFormat('j F Y');
+
+        return $this->date_disponibilite->isFuture()
+            ? "départs à partir du {$date}"
+            : "départs possibles depuis le {$date}";
+    }
+
     public function scopePubliees($query)
     {
         return $query->where('est_publiee', true);

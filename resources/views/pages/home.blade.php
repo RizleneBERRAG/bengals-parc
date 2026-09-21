@@ -54,8 +54,7 @@
         <span class="mono" style="color:var(--ivory-dim)">{{ $portee->code }} · {{ $portee->pere?->nom }} × {{ $portee->mere?->nom }}</span>
         <span>
             <strong>{{ $nbDispo }} chaton{{ $nbDispo > 1 ? 's' : '' }} disponible{{ $nbDispo > 1 ? 's' : '' }}</strong>
-            <span style="color:var(--ivory-dim)">— né{{ $portee->nb_chatons > 1 ? 's' : '' }} le {{ $portee->date_naissance->translatedFormat('j F Y') }},
-            départs possibles depuis le {{ $portee->date_disponibilite?->translatedFormat('j F Y') }}</span>
+            <span style="color:var(--ivory-dim)">— né{{ $portee->nb_chatons > 1 ? 's' : '' }} le {{ $portee->date_naissance->translatedFormat('j F Y') }}@if($portee->phraseDisponibilite()), {{ $portee->phraseDisponibilite() }}@endif</span>
         </span>
         <a class="tlink" href="{{ route('kittens.index') }}">Voir la portée</a>
     </div>

@@ -10,7 +10,7 @@
         <x-section-head
             eyebrow="Nos chatons"
             titre="{{ $portee->code }} — {{ $portee->pere?->nom }} × {{ $portee->mere?->nom }}"
-            lede="Nés le {{ $portee->date_naissance->translatedFormat('j F Y') }}. Départs possibles depuis le {{ $portee->date_disponibilite?->translatedFormat('j F Y') }}, identifiés, vaccinés, vermifugés et inscrits au LOOF." />
+            lede="Nés le {{ $portee->date_naissance->translatedFormat('j F Y') }}. {{ $portee->phraseDisponibilite() ? \Illuminate\Support\Str::ucfirst($portee->phraseDisponibilite()).', ' : '' }}identifiés, vaccinés, vermifugés et inscrits au LOOF." />
 
         <div class="filters">
             <a href="{{ route('kittens.index') }}"
