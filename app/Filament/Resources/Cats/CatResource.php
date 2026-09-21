@@ -26,13 +26,6 @@ class CatResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
-    /*
-     * Cat route sur son slug cote public, pour des URLs lisibles.
-     * Le back-office route sur l'identifiant : l'adresse d'un ecran d'edition
-     * ne doit pas dependre d'un champ que l'on modifie sur cet ecran.
-     */
-    protected static ?string $recordRouteKeyName = 'id';
-
     protected static ?string $recordTitleAttribute = 'nom';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserGroup;

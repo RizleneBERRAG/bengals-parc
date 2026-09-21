@@ -2,8 +2,14 @@
 
 namespace Tests\Feature;
 
+use App\Filament\Resources\Cats\CatResource;
+use App\Filament\Resources\Kittens\KittenResource;
+use App\Filament\Resources\Litters\LitterResource;
+use App\Filament\Resources\Photos\PhotoResource;
+use App\Models\Cat;
 use App\Models\Kitten;
 use App\Models\Litter;
+use App\Models\Photo;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -44,14 +50,32 @@ class BackOfficeTest extends TestCase
         $this->actingAs($this->eleveuse())->get($chemin)->assertOk();
     }
 
+    /**
+     * On demande a l'application de fabriquer ses propres liens, exactement comme
+     * le fait le bouton « Modifier » d'une liste.
+     *
+     * Ne jamais ecrire ces URLs a la main ici : une version precedente le faisait
+     * et le test passait alors que le back-office renvoyait 404 en vrai. Filament
+     * construisait le lien avec la cle de route du modele (le slug) et le
+     * resolvait avec une autre cle. Un chemin ecrit a la main teste le chemin,
+     * pas le lien sur lequel l'eleveuse clique.
+     */
     public function test_les_ecrans_d_edition_repondent(): void
     {
         $eleveuse = $this->eleveuse();
-        $portee   = Litter::firstOrFail();
-        $chaton   = Kitten::firstOrFail();
 
-        $this->actingAs($eleveuse)->get("/admin/litters/{$portee->id}/edit")->assertOk();
-        $this->actingAs($eleveuse)->get("/admin/kittens/{$chaton->id}/edit")->assertOk();
+        $liens = [
+            'portée'       => LitterResource::getUrl('edit', ['record' => Litter::firstOrFail()]),
+            'chaton'       => KittenResource::getUrl('edit', ['record' => Kitten::firstOrFail()]),
+            'reproducteur' => CatResource::getUrl('edit', ['record' => Cat::firstOrFail()]),
+            'photo'        => PhotoResource::getUrl('edit', ['record' => Photo::firstOrFail()]),
+        ];
+
+        foreach ($liens as $quoi => $lien) {
+            $this->actingAs($eleveuse)
+                ->get($lien)
+                ->assertOk("L'ecran d'edition d'une {$quoi} ne repond pas : {$lien}");
+        }
     }
 
     public function test_le_back_office_est_ferme_aux_visiteurs(): void
