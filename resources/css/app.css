@@ -517,43 +517,57 @@ a.figure{display:block;overflow:hidden}
   color:var(--bronze-lt);transition:transform .35s var(--ease)}
 .social:hover{transform:translateY(-1px)}
 
-/* --mark-fond : la couleur qui masque le centre de l'anneau dégradé. Elle dépend
-   du fond sur lequel le bouton se pose, et c'est la seule chose que les variantes
-   plus bas ont à redéfinir. */
-.social-mark{--mark-fond:var(--ink);
+/* Une rangée d'icônes : Instagram, courriel, téléphone. */
+.socials{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+
+/* Trois variables pilotent l'habillage, et les variantes ne redéfinissent
+   qu'elles :
+   --mark-fond   la couleur qui masque le centre de l'anneau dégradé ;
+   --mark-anneau le dégradé de l'anneau lui-même ;
+   --mark-lueur  la teinte de la lueur, en composantes RVB pour l'ombre portée. */
+.social-mark{
+  --mark-fond:var(--ink);
+  --mark-anneau:conic-gradient(from 205deg,var(--bronze-lt),var(--bronze) 34%,var(--bronze-deep) 62%,var(--bronze-lt));
+  --mark-lueur:176,122,60;
+  --mark-actif:var(--ivory);
   position:relative;width:38px;height:38px;display:grid;place-items:center;
   border-radius:50%;border:1px solid var(--bronze-dim);color:inherit;
   transition:color .35s,border-color .35s,box-shadow .35s}
 
-/* L'anneau dégradé vit sur un pseudo-élément, et c'est lui seul qui tourne.
-   Le glyphe Instagram n'est jamais transformé.
+/* Instagram garde les couleurs de sa marque. */
+.social--instagram .social-mark{
+  --mark-anneau:conic-gradient(from 205deg,#F9CE34,#EE2A7B 38%,#6228D7 68%,#F9CE34);
+  --mark-lueur:238,42,123;
+  --mark-actif:#FFF1F7}
+
+/* L'anneau vit sur un pseudo-élément, et c'est lui seul qui tourne.
+   Le glyphe n'est jamais transformé.
    Ne pas revenir à une rotation du bouton compensée par une rotation inverse du
-   svg : les deux transformations s'annulent bien géométriquement, mais le
-   pictogramme est re-rastérisé à chaque image et il vibre visiblement. Les règles
-   de marque de Meta interdisent de toute façon d'incliner le logo.
+   svg : les deux s'annulent géométriquement, mais le pictogramme est
+   re-rastérisé à chaque image et il vibre visiblement. Les règles de marque de
+   Meta interdisent de toute façon d'incliner le logo Instagram.
    Astuce des deux fonds : padding-box pour le centre, border-box pour le dégradé. */
 .social-mark::before{content:'';position:absolute;inset:-1px;border-radius:50%;
   border:1px solid transparent;pointer-events:none;opacity:0;
   background:
     linear-gradient(var(--mark-fond),var(--mark-fond)) padding-box,
-    conic-gradient(from 205deg,#F9CE34,#EE2A7B 38%,#6228D7 68%,#F9CE34) border-box;
+    var(--mark-anneau) border-box;
   transition:opacity .35s,transform .55s var(--ease)}
 
 .social-mark svg{position:relative;z-index:1;width:19px;height:19px;display:block}
 
 .social:hover .social-mark,
-.social:focus-visible .social-mark{border-color:transparent;color:#FFF1F7;
-  box-shadow:0 0 0 3px rgba(238,42,123,.13),0 0 22px rgba(238,42,123,.36)}
+.social:focus-visible .social-mark{border-color:transparent;color:var(--mark-actif);
+  box-shadow:0 0 0 3px rgba(var(--mark-lueur),.13),0 0 22px rgba(var(--mark-lueur),.36)}
 .social:hover .social-mark::before,
 .social:focus-visible .social-mark::before{opacity:1;transform:rotate(60deg)}
 
 footer .social-mark{--mark-fond:var(--ink-2)}
 .paper .social{color:var(--bronze-dim)}
-.paper .social-mark{--mark-fond:var(--paper);border-color:var(--paper-3)}
-.paper .social:hover .social-mark,
-.paper .social:focus-visible .social-mark{color:#C21E68}
+.paper .social-mark{--mark-fond:var(--paper);border-color:var(--paper-3);--mark-actif:var(--sepia)}
+.paper .social--instagram .social-mark{--mark-actif:#C21E68}
 
-/* Respecte le reglage systeme « reduire les animations ». */
+/* Respecte le réglage système « réduire les animations ». */
 @media(prefers-reduced-motion:reduce){
   .social-mark::before{transition:opacity .2s}
   .social:hover .social-mark::before,

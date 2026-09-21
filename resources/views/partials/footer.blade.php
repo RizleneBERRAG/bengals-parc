@@ -41,9 +41,13 @@
                     <li><a href="mailto:{{ $mail }}">{{ $mail }}</a></li>
                     <li><a href="{{ route('contact') }}">Venir nous voir</a></li>
                 </ul>
-                @if($insta)
-                    <x-social-link :url="$insta" style="margin-top:20px" />
-                @endif
+                <div class="socials" style="margin-top:20px">
+                    @if($insta)
+                        <x-social-link :url="$insta" />
+                    @endif
+                    <x-social-link type="mail" :url="'mailto:'.$mail" :handle="$mail" />
+                    <x-social-link type="tel" :url="'tel:'.\Illuminate\Support\Str::of($tel)->replace(' ', '')->replaceFirst('0', '+33')" :handle="$tel" />
+                </div>
             </div>
         </div>
         <div class="fbot">

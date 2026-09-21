@@ -116,9 +116,13 @@
                     </table>
                 </x-record>
 
-                @if($insta)
-                    <x-social-link :url="$insta" />
-                @endif
+                <div class="socials">
+                    @if($insta)
+                        <x-social-link :url="$insta" />
+                    @endif
+                    <x-social-link type="mail" :url="'mailto:'.$mail" :handle="$mail" />
+                    <x-social-link type="tel" :url="'tel:'.$telRaw" :handle="$tel" />
+                </div>
 
                 <div class="btnrow">
                     <a class="btn" href="tel:{{ $telRaw }}">Appeler l'élevage</a>
