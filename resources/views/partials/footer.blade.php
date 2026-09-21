@@ -48,7 +48,7 @@
         </div>
         <div class="fbot">
             <span>© {{ date('Y') }} Bengal's Parc — Certificat de capacité · SIREN {{ $siren ?? 'à compléter' }}</span>
-            <span>Maquette Net Strategy</span>
+            <span>Rizlene Berrag</span>
         </div>
     </div>
 </footer>
