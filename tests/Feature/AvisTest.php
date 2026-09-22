@@ -119,6 +119,24 @@ class AvisTest extends TestCase
             ->assertSee('parfaitement sociabilisé', escape: false);
     }
 
+    /**
+     * Du plus recent au plus ancien, puis par prenom a date egale. Il y avait un
+     * champ d'ordre a la main : deux avis pouvaient porter le meme rang, et le
+     * classement devenait alors imprevisible.
+     */
+    public function test_les_avis_se_classent_par_date_puis_par_prenom(): void
+    {
+        $this->seed();
+        $this->avis(['prenom' => 'Ancien', 'publie_le' => '2024-01-10']);
+        $this->avis(['prenom' => 'Recent', 'publie_le' => '2026-05-01']);
+        $this->avis(['prenom' => 'Bea',    'publie_le' => '2026-05-01']);
+        $this->avis(['prenom' => 'Alice',  'publie_le' => '2026-05-01']);
+
+        $ordre = Review::publies()->pluck('prenom')->all();
+
+        $this->assertSame(['Alice', 'Bea', 'Recent', 'Ancien'], $ordre);
+    }
+
     public function test_un_avis_masque_ne_s_affiche_pas(): void
     {
         $this->seed();

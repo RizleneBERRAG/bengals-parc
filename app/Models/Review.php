@@ -26,9 +26,19 @@ class Review extends Model
         ];
     }
 
+    /**
+     * Du plus recent au plus ancien, puis par prenom a date egale.
+     *
+     * Il y avait un champ « ordre d'affichage » a la main : deux avis pouvaient
+     * porter le meme rang, et le classement devenait alors imprevisible. La date
+     * est de toute façon ce qu'attend un lecteur — le temoignage le plus recent
+     * en premier — et elle ne demande aucun entretien.
+     */
     public function scopePublies($query)
     {
-        return $query->where('est_publie', true)->orderBy('ordre');
+        return $query->where('est_publie', true)
+            ->orderByDesc('publie_le')
+            ->orderBy('prenom');
     }
 
     /** Les avis deposes par le site et pas encore relus. */

@@ -16,9 +16,10 @@ class ReviewsTable
     public static function configure(Table $table): Table
     {
         return $table
-            // Deux criteres : les avis en attente d'abord, puis l'ordre d'affichage.
-            // defaultSort() n'en accepte qu'un seul, d'ou le tri sur la requete.
-            ->modifyQueryUsing(fn (Builder $query) => $query->orderBy('est_publie')->orderBy('ordre'))
+            // Les avis en attente d'abord, puis du plus recent au plus ancien — le
+            // meme ordre que sur le site. defaultSort() n'accepte qu'un critere,
+            // d'ou le tri porte sur la requete.
+            ->modifyQueryUsing(fn (Builder $query) => $query->orderBy('est_publie')->orderByDesc('publie_le'))
             ->columns([
                 TextColumn::make('prenom')
                     ->label('Prénom')
@@ -36,7 +37,7 @@ class ReviewsTable
                     ->searchable(),
 
                 TextColumn::make('publie_le')
-                    ->label('Sur Google le')
+                    ->label('Date')
                     ->date('d/m/Y')
                     ->placeholder('—')
                     ->sortable(),

@@ -56,16 +56,14 @@ class ReviewForm
                             ->required()
                             ->columnSpanFull(),
 
+                        // C'est cette date qui classe les avis sur le site : le plus
+                        // recent en premier. Il n'y a plus de champ d'ordre a la main.
                         DatePicker::make('publie_le')
-                            ->label('Publié sur Google le')
+                            ->label('Date de l’avis')
                             ->displayFormat('d/m/Y')
-                            ->helperText('Facultatif. Affiché à côté de l’avis.'),
-
-                        TextInput::make('ordre')
-                            ->label('Ordre d’affichage')
-                            ->numeric()
-                            ->default(0)
-                            ->required(),
+                            ->default(now())
+                            ->required()
+                            ->helperText('Les avis s’affichent du plus récent au plus ancien.'),
                     ]),
 
                 Section::make('Publication')

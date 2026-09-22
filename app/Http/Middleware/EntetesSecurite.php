@@ -58,7 +58,9 @@ class EntetesSecurite
             'Permissions-Policy' => 'camera=(), microphone=(), geolocation=(), payment=(), usb=()',
         ]);
 
-        if (! $request->is('admin', 'admin/*')) {
+        // Les points d'entree Livewire servent le back-office : les couvrir n'a
+        // pas de sens puisque le panneau lui-meme en est exclu.
+        if (! $request->is('admin', 'admin/*', 'livewire/*')) {
             $reponse->headers->set('Content-Security-Policy', implode('; ', self::CSP));
         }
 
