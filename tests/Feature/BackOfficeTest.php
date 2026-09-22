@@ -101,6 +101,36 @@ class BackOfficeTest extends TestCase
             ->assertDontSee('filamentphp.com', escape: false)
             ->assertDontSee('github.com/filamentphp', escape: false);
     }
+    public static function ecransAvecPhoto(): array
+    {
+        return [
+            'reproducteur' => ['/admin/cats/create'],
+            'chaton'       => ['/admin/kittens/create'],
+            'portée'       => ['/admin/litters/create'],
+            'photo'        => ['/admin/photos/create'],
+        ];
+    }
+
+    /**
+     * Les colonnes photo_principale et chemin stockent un chemin de fichier. Les
+     * ecrans generes automatiquement les presentaient en simples champs texte :
+     * il aurait fallu taper « images/cats/uzumaki.webp » a la main, donc en
+     * pratique on ne pouvait pas ajouter de photo. Chaque ecran doit offrir un
+     * vrai champ d'envoi.
+     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('ecransAvecPhoto')]
+    public function test_l_ecran_offre_un_vrai_champ_d_envoi(string $chemin): void
+    {
+        $html = $this->actingAs($this->eleveuse())->get($chemin)->assertOk()->getContent();
+
+        $this->assertStringContainsString('fi-fo-file-upload', $html, "Aucun champ d'envoi sur {$chemin}.");
+
+        $this->assertDoesNotMatchRegularExpression(
+            '/<input[^>]*type="text"[^>]*(photo_principale|photo_secondaire)/',
+            $html,
+            "Une photo ne doit pas se saisir dans un champ texte sur {$chemin}."
+        );
+    }
     public function test_le_back_office_est_ferme_aux_visiteurs(): void
     {
         $this->seed();

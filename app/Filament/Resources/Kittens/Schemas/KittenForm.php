@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Kittens\Schemas;
 
 use App\Enums\KittenStatus;
+use App\Filament\Champs\ChampPhoto;
 use App\Models\Litter;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
@@ -116,6 +117,13 @@ class KittenForm
                             ->numeric()
                             ->default(0)
                             ->required(),
+                    ]),
+
+                Section::make('Photo')
+                    ->columns(1)
+                    ->schema([
+                        ChampPhoto::make('photo_principale', 'Photo du chaton',
+                            'Illustre la fiche et la vignette dans la liste des chatons.'),
                     ]),
 
                 Section::make('Publication')

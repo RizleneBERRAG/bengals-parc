@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Litters\Schemas;
 
 use App\Enums\CatRole;
+use App\Filament\Champs\ChampPhoto;
 use App\Models\Cat;
 use App\Models\Litter;
 use Filament\Forms\Components\DatePicker;
@@ -82,6 +83,12 @@ class LitterForm
                             ->rows(4)
                             ->maxLength(2000)
                             ->columnSpanFull(),
+                    ]),
+
+                Section::make('Photo')
+                    ->columns(1)
+                    ->schema([
+                        ChampPhoto::make('photo_principale', 'Photo de la portée'),
                     ]),
 
                 Section::make('Publication')
