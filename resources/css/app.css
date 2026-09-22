@@ -730,3 +730,99 @@ footer .social-mark{--mark-fond:var(--ink-2)}
      après celle-ci : il faut donc forcer. */
   .leaflet-control-zoom a{width:40px !important;height:40px !important;line-height:40px !important}
 }
+
+
+/* ==================================================================
+   Transitions de page — View Transitions API
+
+   Le site est servi page par page par Laravel : chaque clic est une
+   navigation complete. La regle ci-dessous demande au navigateur de faire
+   le raccord lui-meme, sans une ligne de JavaScript et sans transformer
+   le site en application monopage. La ou elle n'est pas comprise
+   (Firefox aujourd'hui), la navigation reste celle d'avant : rien ne
+   casse, il manque seulement le fondu.
+   ================================================================== */
+@view-transition{navigation:auto}
+
+/* Le bandeau et le pied de page ne clignotent pas d'une page a l'autre :
+   nommes, ils sortent du groupe racine et restent en place pendant que le
+   contenu se remplace dessous. */
+header.nav{view-transition-name:barre}
+footer{view-transition-name:pied}
+
+::view-transition-group(barre),
+::view-transition-group(pied){animation-duration:.2s}
+
+::view-transition-old(root){animation:vt-sort .26s var(--ease) both}
+::view-transition-new(root){animation:vt-entre .42s var(--ease) both}
+@keyframes vt-sort{to{opacity:0;transform:translateY(-10px)}}
+@keyframes vt-entre{from{opacity:0;transform:translateY(16px)}}
+
+/* La photo qui suit le clic.
+
+   Une fiche de chaton ou de reproducteur porte la meme photo que la carte
+   cliquee : plutot que de la faire disparaitre puis reapparaitre ailleurs,
+   le navigateur la deplace et la redimensionne d'un point a l'autre. Le nom
+   est pose par app.js sur la seule carte cliquee — deux elements portant le
+   meme nom au meme instant annuleraient la transition.
+
+   height/object-fit : sans eux, l'instantane est etire pendant le trajet,
+   la carte etant en 4/5 et la fiche en 4/5 mais pas a la meme largeur. */
+::view-transition-group(photo-fiche){animation-duration:.56s;animation-timing-function:var(--ease)}
+::view-transition-old(photo-fiche),
+::view-transition-new(photo-fiche){height:100%;object-fit:cover}
+
+@media (prefers-reduced-motion:reduce){
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*){animation:none!important}
+}
+
+
+/* ==================================================================
+   Jauge de lecture
+
+   Un filet de bronze pose sur le bord bas du bandeau, qui se remplit au
+   fil du defilement. Anime par la position de la page elle-meme
+   (animation-timeline), donc sans ecouteur de scroll : la barre suit le
+   doigt au pixel pres, y compris pendant un defilement par inertie.
+   Absente la ou animation-timeline n'existe pas — c'est un ornement.
+   ================================================================== */
+#jauge{display:none}
+@supports (animation-timeline:scroll()){
+  @media (prefers-reduced-motion:no-preference){
+    #jauge{display:block;position:absolute;left:0;right:0;bottom:-1px;height:1.5px;
+      background:linear-gradient(90deg,var(--bronze-deep),var(--bronze),var(--bronze-lt));
+      transform-origin:0 50%;scale:0 1;pointer-events:none;
+      animation:jauge linear both;animation-timeline:scroll(root block)}
+    @keyframes jauge{to{scale:1 1}}
+  }
+}
+
+
+/* ==================================================================
+   Hero — levee du titre
+
+   Chaque ligne du titre monte derriere son propre masque, l'accroche et
+   les boutons suivent. Tout est enferme dans « no-preference » : la regle
+   globale de reduction des animations coupe les animations sans annuler
+   les transformations, et une ligne restee a translateY(102%) serait une
+   ligne invisible. Ici, sans animation, il n'y a aucune transformation
+   a annuler.
+   ================================================================== */
+@media (prefers-reduced-motion:no-preference){
+  .hero h1 .ln{display:block;overflow:hidden;padding-bottom:.08em;margin-bottom:-.08em}
+  .hero h1 .ln>span{display:block;transform:translateY(104%);animation:levee .95s var(--ease) .06s both}
+  .hero h1 .ln:nth-child(2)>span{animation-delay:.16s}
+  @keyframes levee{to{transform:translateY(0)}}
+
+  .hero .eyebrow,
+  .hero .lede,
+  .hero .btnrow,
+  .hero .photocred{animation:monte .8s var(--ease) both}
+  .hero .eyebrow{animation-delay:.02s}
+  .hero .lede{animation-delay:.34s}
+  .hero .btnrow{animation-delay:.44s}
+  .hero .photocred{animation-delay:.6s}
+  @keyframes monte{from{opacity:0;transform:translateY(14px)}}
+}

@@ -159,3 +159,50 @@ if (!reduit()) {
         if (el.getBoundingClientRect().top < window.innerHeight * 1.2) el.classList.remove('pre');
     }), 2200);
 }
+
+/* ---------- transitions de page : la photo suit le clic ----------
+
+   Le navigateur sait deja fondre une page dans l'autre (regle
+   @view-transition dans app.css). Ce bloc ajoute le seul detail qu'il ne
+   peut pas deviner : quelle image de la liste correspond a la grande photo
+   de la fiche. Une fois les deux nommees pareil, il ne les fait plus
+   disparaitre puis reapparaitre — il deplace la meme image d'un cadre a
+   l'autre.
+
+   Le nom est pose au dernier moment et retire des la fin du trajet : deux
+   elements portant le meme nom au meme instant annulent la transition, et
+   le visiteur peut tres bien cliquer une deuxieme carte juste apres.
+
+   pageswap se declenche sur la page qui part, pagereveal sur celle qui
+   arrive. Les deux n'existent pas partout ; la ou elles manquent, il ne se
+   passe rien de plus qu'avant. */
+
+const NOM_VT = 'photo-fiche';
+
+const photoDeLaFiche = () => document.querySelector('.detail .photo img');
+
+const photoDeLaCarte = (url) => {
+    if (!url) return null;
+    const chemin = new URL(url, location.href).pathname;
+    const lien = [...document.querySelectorAll('a.fiche, a.repro')]
+        .find((a) => new URL(a.href, location.href).pathname === chemin);
+    return lien?.querySelector('img') ?? null;
+};
+
+const nommer = (img, transition) => {
+    if (!img) return;
+    img.style.viewTransitionName = NOM_VT;
+    transition?.finished.finally(() => { img.style.viewTransitionName = ''; });
+};
+
+window.addEventListener('pageswap', (e) => {
+    if (!e.viewTransition) return;
+    nommer(photoDeLaCarte(e.activation?.entry?.url) ?? photoDeLaFiche(), e.viewTransition);
+});
+
+window.addEventListener('pagereveal', (e) => {
+    if (!e.viewTransition) return;
+    // Sur une fiche c'est la grande photo ; sur une liste, la vignette d'ou
+    // l'on vient — le retour arriere replie l'image sur sa carte.
+    nommer(photoDeLaFiche() ?? photoDeLaCarte(window.navigation?.activation?.from?.url), e.viewTransition);
+});

@@ -41,6 +41,10 @@ class BackOfficeTest extends TestCase
             'reproducteurs'     => ['/admin/cats'],
             'photos'            => ['/admin/photos'],
             'nouvelle photo'    => ['/admin/photos/create'],
+            'avis'              => ['/admin/reviews'],
+            'demandes'          => ['/admin/adoption-requests'],
+            'messages'          => ['/admin/contact-messages'],
+            'réglages'          => ['/admin/settings'],
         ];
     }
 
@@ -130,6 +134,69 @@ class BackOfficeTest extends TestCase
             $html,
             "Une photo ne doit pas se saisir dans un champ texte sur {$chemin}."
         );
+    }
+    /**
+     * Le formulaire de pre-reservation est la conversion principale du site. Sans
+     * ecran pour lire les demandes, elles tombaient dans un trou : une demande
+     * etait deja en base sans que personne puisse l'ouvrir.
+     */
+    public function test_une_demande_d_adoption_se_lit_et_se_suit(): void
+    {
+        $demande = \App\Models\AdoptionRequest::create([
+            'prenom' => 'Camille', 'nom' => 'Durand', 'email' => 'camille@example.test',
+            'message' => 'Nous cherchons un chaton pour la fin de l’année.',
+        ]);
+
+        $this->actingAs($this->eleveuse())
+            ->get(\App\Filament\Resources\AdoptionRequests\AdoptionRequestResource::getUrl('edit', ['record' => $demande]))
+            ->assertOk()
+            ->assertSee('Camille')
+            ->assertSee('fin de l’année', escape: false);
+
+        $this->assertSame('nouveau', $demande->fresh()->statut);
+    }
+
+    public function test_un_message_de_contact_se_lit(): void
+    {
+        $message = \App\Models\ContactMessage::create([
+            'objet' => 'visite', 'prenom' => 'Sofiane', 'email' => 'sofiane@example.test',
+            'message' => 'Serait-il possible de venir un samedi ?',
+        ]);
+
+        $this->actingAs($this->eleveuse())
+            ->get(\App\Filament\Resources\ContactMessages\ContactMessageResource::getUrl('edit', ['record' => $message]))
+            ->assertOk()
+            ->assertSee('Sofiane')
+            ->assertSee('venir un samedi', escape: false);
+    }
+
+    public function test_un_reglage_se_modifie(): void
+    {
+        // eleveuse() peuple la base : l'appeler avant d'interroger les reglages.
+        $eleveuse = $this->eleveuse();
+        $reglage = \App\Models\Setting::where('cle', 'legal.siren')->firstOrFail();
+
+        $this->actingAs($eleveuse)
+            ->get(\App\Filament\Resources\Settings\SettingResource::getUrl('edit', ['record' => $reglage]))
+            ->assertOk()
+            ->assertSee('legal.siren');
+    }
+
+    /**
+     * Rien ne se cree a la main dans ces trois rubriques : les demandes et les
+     * messages viennent du site, les reglages du seeder. Un ecran de creation
+     * n'inviterait qu'a fabriquer de fausses entrees ou des cles orphelines.
+     */
+    public function test_ces_rubriques_n_offrent_aucune_creation(): void
+    {
+        foreach ([
+            \App\Filament\Resources\AdoptionRequests\AdoptionRequestResource::class,
+            \App\Filament\Resources\ContactMessages\ContactMessageResource::class,
+            \App\Filament\Resources\Settings\SettingResource::class,
+        ] as $resource) {
+            $this->assertFalse($resource::canCreate(), $resource.' ne doit pas permettre la création.');
+            $this->assertArrayNotHasKey('create', $resource::getPages());
+        }
     }
     public function test_le_back_office_est_ferme_aux_visiteurs(): void
     {
