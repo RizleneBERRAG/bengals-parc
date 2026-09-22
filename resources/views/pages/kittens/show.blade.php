@@ -24,10 +24,7 @@
 
         <div class="detail">
             <div class="stack" style="gap:14px">
-                <div class="photo">
-                    <img src="{{ asset($chaton->photo_principale) }}"
-                         alt="{{ $chaton->nom }}, chaton Bengal {{ \Illuminate\Support\Str::lower($chaton->robe) }}">
-                </div>
+                <x-photo-viewer :photos="$chaton->galerie()" />
                 @if($fratrie->isNotEmpty())
                     <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:12px">
                         @foreach($fratrie->take(3) as $frere)

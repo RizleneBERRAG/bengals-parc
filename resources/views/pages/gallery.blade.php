@@ -26,7 +26,7 @@
             </div>
         @endif
 
-        <div class="masonry" id="mas">
+        <div class="masonry" id="mas" data-lightbox>
             @foreach($photos->when(request('categorie'), fn ($c) => $c->where('categorie', request('categorie'))) as $photo)
                 <figure data-full="{{ asset($photo->chemin) }}" data-legende="{{ $photo->legende }}">
                     <img src="{{ asset($photo->chemin) }}" alt="{{ $photo->alt }}" loading="lazy">

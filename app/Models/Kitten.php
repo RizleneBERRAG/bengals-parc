@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\KittenStatus;
+use App\Models\Concerns\AUneGalerie;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -27,6 +28,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  */
 class Kitten extends Model
 {
+    use AUneGalerie;
     use HasFactory;
 
     protected $guarded = [];
@@ -58,6 +60,11 @@ class Kitten extends Model
     public function photos(): MorphMany
     {
         return $this->morphMany(Photo::class, 'attachable')->orderBy('ordre');
+    }
+
+    public function altParDefaut(): string
+    {
+        return $this->nom.', chaton Bengal '.\Illuminate\Support\Str::lower($this->robe);
     }
 
     public function pere(): ?Cat

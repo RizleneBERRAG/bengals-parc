@@ -32,4 +32,9 @@
             <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
         </div>
     </div>
+
+    {{-- Jauge de lecture : un filet de bronze sur le bord bas du bandeau, rempli
+         par la position de la page. Purement decoratif, et absent des navigateurs
+         qui ne connaissent pas animation-timeline. --}}
+    <span id="jauge" aria-hidden="true"></span>
 </header>

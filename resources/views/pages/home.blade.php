@@ -73,7 +73,10 @@
     <div class="scrim"></div>
     <div class="inner wrap">
         <span class="eyebrow">Chatterie Bengal's Parc · L'Isle d'Abeau (38) · Chatons LOOF</span>
-        <h1>Le léopard tient<br><em>dans un salon.</em></h1>
+        {{-- Chaque ligne est enfermee dans son propre masque : le span interieur
+             monte derriere, la ligne se decouvre. Le <br> disparait, .ln etant
+             un bloc. --}}
+        <h1><span class="ln"><span>Le léopard tient</span></span><span class="ln"><span><em>dans un salon.</em></span></span></h1>
         <p class="lede">
             Élevage familial de chats Bengal à vingt minutes de Lyon. Une à deux portées par an,
             élevées au milieu de la maison, parents testés, chatons inscrits au LOOF et cédés

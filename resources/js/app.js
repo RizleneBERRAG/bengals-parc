@@ -56,8 +56,16 @@ if (coat && coatInfo) {
     afficher(0);
 }
 
-/* ---------- galerie : lightbox ---------- */
-const masonry = document.getElementById('mas');
+/* ---------- vue plein ecran ----------
+
+   Un seul mecanisme pour deux usages : la mosaique de la galerie, ou chaque
+   vignette est son propre declencheur, et la visionneuse des fiches, ou c'est
+   la grande photo qui agrandit la vue courante.
+
+   Dans les deux cas la liste des images est lue sur le conteneur marque
+   data-lightbox, a partir des elements porteurs d'un data-full. Rien n'est
+   duplique : les vignettes de la visionneuse servent aussi de liste. */
+
 let lb = null;
 let lbListe = [];
 let lbIndex = 0;
@@ -81,12 +89,11 @@ const fermer = () => {
     document.body.style.overflow = '';
 };
 
-masonry?.addEventListener('click', (e) => {
-    const fig = e.target.closest('figure[data-full]');
-    if (!fig) return;
+const ouvrir = (items, index) => {
+    if (!items.length) return;
 
-    lbListe = [...masonry.querySelectorAll('figure[data-full]')];
-    lbIndex = lbListe.indexOf(fig);
+    lbListe = items;
+    lbIndex = Math.max(0, index);
 
     if (!lb) {
         lb = document.createElement('div');
@@ -112,7 +119,37 @@ masonry?.addEventListener('click', (e) => {
     lb.hidden = false;
     document.body.style.overflow = 'hidden';
     peindre();
+};
+
+const listeDe = (conteneur) => [...conteneur.querySelectorAll('[data-full]')];
+
+document.addEventListener('click', (e) => {
+    // Galerie : on ouvre sur la vignette cliquee.
+    const vignette = e.target.closest('[data-lightbox] figure[data-full]');
+    if (vignette) {
+        const items = listeDe(vignette.closest('[data-lightbox]'));
+        return ouvrir(items, items.indexOf(vignette));
+    }
+
+    // Fiche : on ouvre sur la vue affichee.
+    const scene = e.target.closest('[data-zoom]');
+    if (scene) {
+        const conteneur = scene.closest('[data-lightbox]');
+        if (!conteneur) return;
+        const items = listeDe(conteneur);
+        return ouvrir(items, items.findIndex((v) => v.getAttribute('aria-selected') === 'true'));
+    }
 });
+
+// La scene est annoncee comme un bouton : elle doit repondre au clavier.
+document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const scene = e.target.closest?.('[data-zoom]');
+    if (!scene) return;
+    e.preventDefault();
+    scene.click();
+});
+
 
 /* ---------- apparition au defilement + compteurs ---------- */
 const compter = (el) => {
@@ -179,7 +216,11 @@ if (!reduit()) {
 
 const NOM_VT = 'photo-fiche';
 
-const photoDeLaFiche = () => document.querySelector('.detail .photo img');
+const photoDeLaFiche = () =>
+    // Dans une visionneuse, c'est la vue affichee qui doit suivre le clic,
+    // pas la premiere image de la pile.
+    document.querySelector('.detail .photo img.visible')
+    ?? document.querySelector('.detail .photo img');
 
 const photoDeLaCarte = (url) => {
     if (!url) return null;
@@ -205,4 +246,76 @@ window.addEventListener('pagereveal', (e) => {
     // Sur une fiche c'est la grande photo ; sur une liste, la vignette d'ou
     // l'on vient — le retour arriere replie l'image sur sa carte.
     nommer(photoDeLaFiche() ?? photoDeLaCarte(window.navigation?.activation?.from?.url), e.viewTransition);
+});
+
+
+/* ---------- visionneuse de fiche ----------
+
+   Le ruban de vignettes pilote la scene. Les images sont deja dans le
+   document : changer de vue, c'est deplacer une classe, jamais charger.
+
+   Le ruban est un tablist : la fleche gauche et la fleche droite y
+   circulent, et le focus suit, comme l'attend un lecteur d'ecran. Au doigt,
+   un glissement horizontal sur la grande photo fait la meme chose. */
+
+document.querySelectorAll('.viewer').forEach((viewer) => {
+    const vues = [...viewer.querySelectorAll('.viewer-scene img')];
+    const vignettes = [...viewer.querySelectorAll('.viewer-vignette')];
+    const compteur = viewer.querySelector('.viewer-compteur b');
+    let courant = 0;
+
+    const montrer = (i, prendreLeFocus = false) => {
+        courant = (i + vues.length) % vues.length;
+
+        vues.forEach((img, n) => img.classList.toggle('visible', n === courant));
+        vignettes.forEach((v, n) => {
+            v.setAttribute('aria-selected', String(n === courant));
+            v.tabIndex = n === courant ? 0 : -1;
+        });
+
+        if (compteur) compteur.textContent = courant + 1;
+
+        const active = vignettes[courant];
+        active?.scrollIntoView({ block: 'nearest', inline: 'nearest',
+            behavior: reduit() ? 'auto' : 'smooth' });
+        if (prendreLeFocus) active?.focus();
+    };
+
+    vignettes.forEach((v, i) => v.addEventListener('click', () => montrer(i)));
+
+    viewer.querySelector('.viewer-rail')?.addEventListener('keydown', (e) => {
+        const pas = { ArrowRight: 1, ArrowLeft: -1, Home: -courant, End: vues.length - 1 - courant }[e.key];
+        if (pas === undefined) return;
+        e.preventDefault();
+        montrer(courant + pas, true);
+    });
+
+    /* Glissement au doigt. Le seuil de 40 px evite de changer de photo sur un
+       defilement vertical un peu oblique ; au-dela de 340 px on considere que
+       le doigt a balaye l'ecran et non la photo. */
+    const scene = viewer.querySelector('.viewer-scene');
+    let depart = null;
+
+    scene?.addEventListener('pointerdown', (e) => {
+        depart = e.pointerType === 'touch' ? { x: e.clientX, y: e.clientY } : null;
+    });
+
+    scene?.addEventListener('pointerup', (e) => {
+        if (!depart) return;
+        const dx = e.clientX - depart.x;
+        const dy = e.clientY - depart.y;
+        depart = null;
+        if (Math.abs(dx) < 40 || Math.abs(dx) > 340 || Math.abs(dy) > Math.abs(dx)) return;
+
+        /* Le pointerup sera suivi d'un click, qui ouvrirait la vue plein
+           ecran par-dessus la photo qu'on vient de faire defiler. On le
+           neutralise une fois, en phase de capture : il n'atteint jamais
+           l'ecouteur pose sur le document. */
+        scene.addEventListener('click', (ev) => {
+            ev.stopPropagation();
+            ev.preventDefault();
+        }, { capture: true, once: true });
+
+        montrer(courant + (dx < 0 ? 1 : -1));
+    });
 });

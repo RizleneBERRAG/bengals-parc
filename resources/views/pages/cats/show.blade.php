@@ -21,10 +21,7 @@
 
         <div class="detail">
             <div class="stack" style="gap:14px">
-                <div class="photo"><img src="{{ asset($chat->photo_principale) }}" alt="{{ $chat->nom }}, Bengal {{ \Illuminate\Support\Str::lower($chat->robe) }}"></div>
-                @if($chat->photo_secondaire)
-                    <div class="photo"><img src="{{ asset($chat->photo_secondaire) }}" alt="{{ $chat->nom }} en extérieur" loading="lazy"></div>
-                @endif
+                <x-photo-viewer :photos="$chat->galerie()" />
             </div>
 
             <div class="stack" style="gap:22px">

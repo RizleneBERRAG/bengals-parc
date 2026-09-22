@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\CatRole;
 use App\Enums\HealthTestType;
+use App\Models\Concerns\AUneGalerie;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Cat extends Model
 {
+    use AUneGalerie;
     use HasFactory;
 
     protected $guarded = [];
@@ -37,6 +39,11 @@ class Cat extends Model
     public function photos(): MorphMany
     {
         return $this->morphMany(Photo::class, 'attachable')->orderBy('ordre');
+    }
+
+    public function altParDefaut(): string
+    {
+        return $this->nom.', Bengal '.\Illuminate\Support\Str::lower($this->robe);
     }
 
     public function porteesCommePere(): HasMany
