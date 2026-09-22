@@ -4,8 +4,16 @@
 @section('description', "Âge de départ, tarif, compatibilité avec les enfants et les chiens, vie en appartement, LOOF, allergies : les réponses complètes avant d'adopter un Bengal.")
 
 @push('schema')
-<script type="application/ld+json">
-{!! json_encode([
+{{-- Le tableau est construit dans un bloc php ci-dessous, et non directement
+     dans l'expression d'affichage. Blade compile la directive de contexte meme
+     au milieu d'un tableau PHP : la cle arobase-context etait remplacee par du
+     code compile, et le JSON-LD sortait inexploitable. Les blocs php sont mis
+     de cote avant la compilation des directives, donc la cle y survit.
+     Ne pas remettre ce tableau dans l'expression d'affichage.
+     Et ne pas ecrire de directive Blade dans ce commentaire : elle serait
+     compilee elle aussi. --}}
+@php
+    $schema = [
     '@context'   => 'https://schema.org',
     '@type'      => 'FAQPage',
     'mainEntity' => $faqs->map(fn ($f) => [
@@ -13,7 +21,10 @@
         'name'  => $f->question,
         'acceptedAnswer' => ['@type' => 'Answer', 'text' => strip_tags($f->reponse)],
     ])->values(),
-], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+];
+@endphp
+<script type="application/ld+json">
+{!! json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
 </script>
 @endpush
 

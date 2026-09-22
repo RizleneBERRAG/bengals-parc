@@ -8,11 +8,13 @@
 @endpush
 
 @php
-    // Le visiteur arrive peut-être d'un vieux lien ou d'un résultat de recherche
-    // périmé : si le premier segment correspond à une ancienne adresse connue, on
-    // propose la bonne page au lieu de le laisser dans une impasse.
-    $segment    = trim(request()->path(), '/');
-    $suggestion = config('bengal.anciennes_urls')[$segment] ?? null;
+    // Les anciennes adresses exactes sont redirigées en 301 par routes/web.php et
+    // n'arrivent jamais ici. Restent les adresses PLUS PROFONDES du même site —
+    // /reproducteurs-2/uzumaki, par exemple — qu'aucune redirection exacte ne
+    // couvre. On suggère alors la bonne rubrique d'après le premier segment,
+    // plutôt que de laisser le visiteur dans une impasse.
+    $premier    = explode('/', trim(request()->path(), '/'))[0] ?? '';
+    $suggestion = config('bengal.anciennes_urls')[$premier] ?? null;
 @endphp
 
 @section('content')

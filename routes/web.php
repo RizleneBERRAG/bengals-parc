@@ -6,6 +6,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\KittenController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/',                        [PageController::class, 'home'])->name('home');
@@ -28,6 +29,27 @@ Route::post('/avis', [ReviewController::class, 'store'])
     ->name('reviews.store');
 
 Route::get('/mentions-legales',        [PageController::class, 'legal'])->name('legal');
+
+/*
+ * Sitemap et robots.txt servis par l'application : la directive Sitemap exige
+ * une adresse absolue, qu'un fichier statique figerait sur le domaine du jour
+ * ou il a ete ecrit.
+ */
+Route::get('/sitemap.xml', [SitemapController::class, 'sitemap'])->name('sitemap');
+Route::get('/robots.txt',  [SitemapController::class, 'robots'])->name('robots');
+
+/*
+ * Anciennes adresses du site WordPress, relevees dans l'audit. Redirection
+ * permanente : les liens deja partages, les signets et les resultats de
+ * recherche existants ne doivent pas tomber dans le vide le jour de la bascule.
+ * Une 301 transmet aussi au moteur le peu de reputation acquise par l'ancienne
+ * adresse. La liste vit dans config/bengal.php, partagee avec la page 404 qui
+ * traite les cas non listes.
+ */
+foreach (config('bengal.anciennes_urls', []) as $ancienne => $destination) {
+    Route::get('/'.$ancienne, fn () => redirect()->route($destination, [], 301))
+        ->name('ancienne.'.$ancienne);
+}
 
 Route::get('/adopter',                 [AdoptionController::class, 'create'])->name('adoption.create');
 Route::post('/adopter', [AdoptionController::class, 'store'])

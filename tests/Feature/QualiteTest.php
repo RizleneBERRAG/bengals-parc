@@ -65,13 +65,14 @@ class QualiteTest extends TestCase
     }
 
     /**
-     * Apres la bascule, les anciennes adresses WordPress tomberont sur la 404 :
-     * elle doit proposer la bonne page plutot qu'une impasse.
+     * Les anciennes adresses exactes sont redirigees en 301 — voir SeoTest. Restent
+     * les adresses plus profondes du meme site, qu'aucune redirection exacte ne
+     * couvre : la 404 doit alors proposer la bonne rubrique.
      */
-    public function test_la_page_404_reconnait_les_anciennes_adresses(): void
+    public function test_la_page_404_oriente_depuis_une_ancienne_rubrique(): void
     {
-        foreach (['/reproducteurs-2', '/histoire-chats', '/reservations'] as $ancienne) {
-            $this->get($ancienne)
+        foreach (['/reproducteurs-2/uzumaki', '/histoire-chats/origines'] as $profonde) {
+            $this->get($profonde)
                 ->assertNotFound()
                 ->assertSee('Vous cherchiez sans doute', escape: false);
         }

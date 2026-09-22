@@ -4,13 +4,39 @@
 @section('description', "Chatons Bengal inscrits au LOOF à L'Isle d'Abeau (38), à 20 minutes de Lyon. Parents testés HCM, PK-Def et PRA-b, chatons élevés en famille, cédés identifiés et vaccinés.")
 
 @push('schema')
-<script type="application/ld+json">
-{!! json_encode([
+{{--
+    Fiche d'identite de l'elevage pour les moteurs.
+
+    Elle compte double ici : l'elevage n'a aucune fiche Google Business, et ses
+    concurrents directs en ont une avec des dizaines d'avis. Ces donnees sont le
+    seul signal structure dont disposent les moteurs pour situer l'etablissement.
+
+    Les coordonnees sont celles de la ZONE, pas de l'adresse exacte : le site
+    annonce que l'adresse est communiquee au rendez-vous, et l'adresse postale
+    declaree ici s'arrete volontairement a la commune.
+
+    Pas de Product ni d'Offer sur les fiches chaton : un resultat enrichi
+    Product exige un prix, que ce site ne publie pas — et marquer un chaton
+    comme un produit avec son offre contredirait la page Adopter, qui explique
+    justement qu'un chaton ne se commande pas.
+--}}
+{{-- Le tableau est construit dans un bloc php ci-dessous, et non directement
+     dans l'expression d'affichage. Blade compile la directive de contexte meme
+     au milieu d'un tableau PHP : la cle arobase-context etait remplacee par du
+     code compile, et le JSON-LD sortait inexploitable. Les blocs php sont mis
+     de cote avant la compilation des directives, donc la cle y survit.
+     Ne pas remettre ce tableau dans l'expression d'affichage.
+     Et ne pas ecrire de directive Blade dans ce commentaire : elle serait
+     compilee elle aussi. --}}
+@php
+    $schema = [
     '@context' => 'https://schema.org',
     '@type'    => 'LocalBusiness',
-    'name'     => "Bengal's Parc",
+    '@id'      => route('home').'#elevage',
+    'name'     => \App\Models\Setting::get('elevage.nom', "Bengal's Parc"),
     'description' => "Élevage familial de chats Bengal à L'Isle d'Abeau, près de Lyon.",
     'url'      => route('home'),
+    'image'    => asset('images/cats/hero-duo.webp'),
     'telephone' => \App\Models\Setting::get('contact.telephone'),
     'email'     => \App\Models\Setting::get('contact.email'),
     'address'  => [
@@ -20,7 +46,23 @@
         'addressRegion'   => \App\Models\Setting::get('elevage.departement'),
         'addressCountry'  => 'FR',
     ],
-], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+    'geo' => [
+        '@type'     => 'GeoCoordinates',
+        'latitude'  => config('bengal.carte.zone.lat'),
+        'longitude' => config('bengal.carte.zone.lng'),
+    ],
+    'areaServed' => array_values(array_filter([
+        ['@type' => 'City',            'name' => 'Lyon'],
+        ['@type' => 'AdministrativeArea', 'name' => \App\Models\Setting::get('elevage.departement')],
+    ])),
+    'sameAs' => array_values(array_filter([
+        \App\Models\Setting::get('contact.instagram'),
+    ])),
+    'availableLanguage' => 'fr',
+];
+@endphp
+<script type="application/ld+json">
+{!! json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
 </script>
 @endpush
 
