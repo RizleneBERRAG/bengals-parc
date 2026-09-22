@@ -370,6 +370,27 @@ a.cell:hover{border-color:var(--bronze-dim);background:var(--ink-4)}
 form.demo{display:grid;grid-template-columns:1fr 1fr;gap:17px;margin-top:6px}
 form.demo .full{grid-column:1/-1}
 @media(max-width:700px){form.demo{grid-template-columns:1fr}}
+/* Les fiches .record présentent des couples libellé / valeur en tableau. La
+   colonne de libellé est figée à 46 % et chaque cellule porte 22 px de marge
+   latérale : en dessous d'environ 560 px, ou dès 18 px de texte de base sur un
+   téléphone, le tableau ne peut plus rétrécir. Il poussait la page de 14 px sur
+   les mentions légales, jusqu'à 74 px à 24 px de texte.
+
+   Il contaminait même la page Contact : la grille .two calculait une colonne de
+   346 px pour un conteneur de 316, parce que le tableau imposait sa largeur
+   minimale à toute la grille.
+
+   On empile alors le libellé au-dessus de sa valeur. Chacun prend toute la
+   largeur, et la valeur — souvent une phrase entière sur la page légale —
+   respire au lieu de s'étrangler dans 54 % de l'écran. */
+@media(max-width:560px){
+  .record table,.record tbody,.record tr,.record th,.record td{display:block;width:auto}
+  .record tr{border-bottom:1px solid var(--rule-ink-2)}
+  .record tr:last-child{border-bottom:0}
+  .record th{padding:15px 20px 3px;border-bottom:0}
+  .record td{padding:0 20px 15px;border-bottom:0}
+  .paper .record tr{border-bottom-color:var(--rule-paper)}
+}
 /* Un fieldset prend min-width:min-content par défaut dans les navigateurs : il
    refuse de rétrécir sous la largeur de son contenu le plus large. Mesuré sur
    la page Contact avec un texte réglé à 20 px — réglage courant chez qui voit
