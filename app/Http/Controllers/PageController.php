@@ -20,7 +20,7 @@ class PageController extends Controller
         return view('pages.home', [
             'portee'   => $portee,
             'chatons'  => $portee?->kittens ?? collect(),
-            'chats'    => Cat::publies()->orderBy('ordre')->get(),
+            'chats'    => Cat::publies()->get(),
             'nbDispo'  => Kitten::publies()->disponibles()->count(),
             'photos'   => Photo::publiees()->inRandomOrder()->limit(12)->get(),
         ]);

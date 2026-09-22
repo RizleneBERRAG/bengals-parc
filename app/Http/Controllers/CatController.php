@@ -9,7 +9,7 @@ class CatController extends Controller
     public function index()
     {
         return view('pages.cats.index', [
-            'chats' => Cat::publies()->with('healthTests')->orderBy('ordre')->get(),
+            'chats' => Cat::publies()->with('healthTests')->get(),
         ]);
     }
 
@@ -22,7 +22,7 @@ class CatController extends Controller
         return view('pages.cats.show', [
             'chat'    => $cat,
             'portees' => $cat->portees()->withCount('kittens')->get(),
-            'autres'  => Cat::publies()->whereKeyNot($cat->id)->orderBy('ordre')->get(),
+            'autres'  => Cat::publies()->whereKeyNot($cat->id)->get(),
         ]);
     }
 }

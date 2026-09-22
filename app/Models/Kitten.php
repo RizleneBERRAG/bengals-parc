@@ -120,7 +120,10 @@ class Kitten extends Model
      */
     public function scopePublies($query)
     {
-        return $query->publiables()->where('est_publie', true);
+        return $query->publiables()
+            ->where('est_publie', true)
+            ->orderBy('ordre')
+            ->orderBy('nom');
     }
 
     /**

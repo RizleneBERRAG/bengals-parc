@@ -79,9 +79,20 @@ class Cat extends Model
         return true;
     }
 
+    /**
+     * L'ordre fait partie du scope, il n'est pas laisse a l'appelant.
+     *
+     * Quatre endroits appelaient ce scope et trois seulement pensaient a trier :
+     * le champ « ordre d'affichage » du back-office n'agissait donc pas partout,
+     * et l'ordre paraissait correct par coincidence — les identifiants suivaient
+     * l'ordre voulu. Le jour ou l'eleveuse reordonne une fiche, rien n'aurait
+     * bouge. Le classement appartient au modele, comme la regle de publication.
+     */
     public function scopePublies($query)
     {
-        return $query->where('est_publie', true);
+        return $query->where('est_publie', true)
+            ->orderBy('ordre')
+            ->orderBy('nom');
     }
 
     public function scopeReproducteurs($query)
