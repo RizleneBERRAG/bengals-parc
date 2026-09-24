@@ -268,7 +268,7 @@
             lede="Aucun chaton ne part sans que sa famille soit venue le voir. Les visites se font sur rendez-vous, à L'Isle d'Abeau, le week-end ou en fin de journée." />
         <div class="btnrow" style="justify-content:center">
             <a class="btn" href="{{ route('adoption.create') }}">Demander une visite</a>
-            <a class="btn ghost" href="tel:+33624488936">{{ \App\Models\Setting::get('contact.telephone') }}</a>
+            <a class="btn ghost" href="{{ \App\Models\Setting::telephoneLien() }}">{{ \App\Models\Setting::get('contact.telephone') }}</a>
         </div>
     </div>
 </section>

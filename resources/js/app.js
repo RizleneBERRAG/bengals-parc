@@ -320,3 +320,42 @@ document.querySelectorAll('.viewer').forEach((viewer) => {
         montrer(courant + (dx < 0 ? 1 : -1));
     });
 });
+
+/* ------------------------------------------------------------------
+   Questions frequentes — ouvrir celle qu'on vient chercher
+
+   Chaque question porte une ancre, pour qu'on puisse envoyer un lien
+   direct vers une reponse. Mais l'ancre designe le <details> lui-meme,
+   et un navigateur ne deplie que ceux dont la CIBLE est a l'interieur :
+   sans cela, le visiteur atterrit sur une question fermee.
+   ------------------------------------------------------------------ */
+(() => {
+    const ouvrirLaCible = () => {
+        const id = decodeURIComponent(location.hash.slice(1));
+        if (!id) return;
+
+        const bloc = document.getElementById(id);
+        if (!(bloc instanceof HTMLDetailsElement)) return;
+
+        bloc.open = true;
+
+        /* Ouvrir change les hauteurs, et le navigateur a deja fait son propre
+           defilement — celui de l'ancre, ou celui qu'il restaure d'une visite
+           precedente. On repositionne a la frame suivante, une fois qu'il a fini.
+           On ne touche pas aux autres questions : leur etat appartient au
+           visiteur, et le navigateur le restaure lui-meme. */
+        /* 'instant' et non le defilement doux global : un defilement doux lance
+           pendant le chargement se fait annuler par celui du navigateur. On
+           repositionne une fois a la frame suivante, puis apres le chargement
+           des images, qui decalent encore les hauteurs. */
+        const positionner = () => bloc.scrollIntoView({ block: 'start', behavior: 'instant' });
+
+        requestAnimationFrame(positionner);
+        if (document.readyState !== 'complete') {
+            window.addEventListener('load', positionner, { once: true });
+        }
+    };
+
+    ouvrirLaCible();
+    window.addEventListener('hashchange', ouvrirLaCible);
+})();

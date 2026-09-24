@@ -36,6 +36,20 @@ class Setting extends Model
         return filled($valeur) ? $valeur : $defaut;
     }
 
+    /**
+     * Le numero de l'elevage au format d'un lien tel:.
+     *
+     * Il etait ecrit en dur dans trois boutons alors que le texte affiche a cote
+     * venait du reglage : changer le numero dans le back-office aurait laisse ces
+     * liens composer l'ancien, sans que rien ne le signale.
+     */
+    public static function telephoneLien(): string
+    {
+        $numero = static::get('contact.telephone', '');
+
+        return 'tel:'.\Illuminate\Support\Str::of($numero)->replace(' ', '')->replaceFirst('0', '+33');
+    }
+
     /** Les mentions obligatoires encore vides, affichees en "À compléter". */
     public static function obligatoiresManquantes(): \Illuminate\Support\Collection
     {

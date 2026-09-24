@@ -9,7 +9,6 @@
 
 @php
     $tel    = \App\Models\Setting::get('contact.telephone');
-    $telRaw = \Illuminate\Support\Str::of($tel)->replace(' ', '')->replaceFirst('0', '+33');
     $mail   = \App\Models\Setting::get('contact.email');
     $insta  = \App\Models\Setting::get('contact.instagram');
 @endphp
@@ -110,7 +109,7 @@
             <div class="stack" style="gap:20px">
                 <x-record titre="Nous joindre directement">
                     <table>
-                        <tr><th>Téléphone</th><td><a href="tel:{{ $telRaw }}" style="color:var(--bronze-lt);text-decoration:none">{{ $tel }}</a></td></tr>
+                        <tr><th>Téléphone</th><td><a href="{{ \App\Models\Setting::telephoneLien() }}" style="color:var(--bronze-lt);text-decoration:none">{{ $tel }}</a></td></tr>
                         <tr><th>Email</th><td><a href="mailto:{{ $mail }}" style="color:var(--bronze-lt);text-decoration:none">{{ $mail }}</a></td></tr>
                         <tr><th>Visites</th><td>Sur rendez-vous, week-end et fin de journée</td></tr>
                         <tr><th>Réponse</th><td>Sous 48 heures maximum</td></tr>
@@ -122,11 +121,11 @@
                         <x-social-link :url="$insta" />
                     @endif
                     <x-social-link type="mail" :url="'mailto:'.$mail" :handle="$mail" />
-                    <x-social-link type="tel" :url="'tel:'.$telRaw" :handle="$tel" />
+                    <x-social-link type="tel" :url="\App\Models\Setting::telephoneLien()" :handle="$tel" />
                 </div>
 
                 <div class="btnrow">
-                    <a class="btn" href="tel:{{ $telRaw }}">Appeler l'élevage</a>
+                    <a class="btn" href="{{ \App\Models\Setting::telephoneLien() }}">Appeler l'élevage</a>
                     <a class="btn ghost" href="{{ route('adoption.create') }}">Demander une visite</a>
                 </div>
 

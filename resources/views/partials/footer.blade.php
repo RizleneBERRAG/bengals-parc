@@ -37,7 +37,7 @@
             <div>
                 <h4>Contact</h4>
                 <ul>
-                    <li><a href="tel:{{ \Illuminate\Support\Str::of($tel)->replace(' ', '')->replaceFirst('0', '+33') }}">{{ $tel }}</a></li>
+                    <li><a href="{{ \App\Models\Setting::telephoneLien() }}">{{ $tel }}</a></li>
                     <li><a href="mailto:{{ $mail }}">{{ $mail }}</a></li>
                     <li><a href="{{ route('contact') }}">Venir nous voir</a></li>
                 </ul>
@@ -46,7 +46,7 @@
                         <x-social-link :url="$insta" />
                     @endif
                     <x-social-link type="mail" :url="'mailto:'.$mail" :handle="$mail" />
-                    <x-social-link type="tel" :url="'tel:'.\Illuminate\Support\Str::of($tel)->replace(' ', '')->replaceFirst('0', '+33')" :handle="$tel" />
+                    <x-social-link type="tel" :url="\App\Models\Setting::telephoneLien()" :handle="$tel" />
                 </div>
             </div>
         </div>

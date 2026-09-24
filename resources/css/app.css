@@ -19,7 +19,10 @@
   --ease:cubic-bezier(.2,.7,.25,1);
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
+/* Le bandeau est en position sticky : sans reserve, une ancre depose sa cible
+   DERRIERE lui. Vaut pour toutes les ancres du site — les questions frequentes,
+   #avis et #formulaire de la page Contact. */
+html{scroll-behavior:smooth;scroll-padding-top:clamp(112px,14vh,140px)}
 body{margin:0;background:var(--ink);color:var(--ivory);font-family:var(--body);font-size:16.5px;line-height:1.62;
   -webkit-font-smoothing:antialiased;overflow-x:hidden}
 img{max-width:100%;display:block}

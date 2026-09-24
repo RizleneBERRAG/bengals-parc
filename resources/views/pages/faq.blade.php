@@ -41,23 +41,27 @@
         <div class="faqwrap">
             <div>
                 <div class="faq">
+                    {{-- Chaque question porte son ancre : l'eleveuse peut repondre a
+                         un courriel par un lien direct vers la bonne reponse, et un
+                         moteur peut y envoyer sans faire chercher. --}}
                     @foreach($faqs as $faq)
-                        <details @if($loop->first) open @endif>
+                        @php($ancre = 'q-'.\Illuminate\Support\Str::slug($faq->question))
+                        <details id="{{ $ancre }}" @if($loop->first) open @endif>
                             <summary>{{ $faq->question }}</summary>
                             <div class="ans">{!! $faq->reponse !!}</div>
                         </details>
                     @endforeach
                 </div>
                 <div class="btnrow" style="margin-top:40px">
-                    <a class="btn" href="{{ route('adoption.create') }}">Poser une autre question</a>
-                    <a class="btn ghost" href="tel:+33624488936">{{ \App\Models\Setting::get('contact.telephone') }}</a>
+                    <a class="btn" href="{{ route('contact') }}">Poser une autre question</a>
+                    <a class="btn ghost" href="{{ \App\Models\Setting::telephoneLien() }}">{{ \App\Models\Setting::get('contact.telephone') }}</a>
                 </div>
             </div>
             <aside class="aside">
                 <x-rosettes />
                 <h4>Votre question n'y est pas ?</h4>
                 <p>Appelez-nous. On répond plus volontiers au téléphone qu'en trois lignes, surtout quand il s'agit de savoir si un Bengal est fait pour vous.</p>
-                <a class="btn" href="tel:+33624488936" style="justify-content:center">{{ \App\Models\Setting::get('contact.telephone') }}</a>
+                <a class="btn" href="{{ \App\Models\Setting::telephoneLien() }}" style="justify-content:center">{{ \App\Models\Setting::get('contact.telephone') }}</a>
                 <a class="tlink" href="{{ route('adoption.create') }}">Demander une visite</a>
             </aside>
         </div>

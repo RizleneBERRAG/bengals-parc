@@ -28,7 +28,7 @@
             @if($insta)
                 <x-social-link :url="$insta" />
             @endif
-            <a class="tel" href="tel:{{ \Illuminate\Support\Str::of($tel)->replace(' ', '')->replaceFirst('0', '+33') }}">{{ $tel }}</a>
+            <a class="tel" href="{{ \App\Models\Setting::telephoneLien() }}">{{ $tel }}</a>
             <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
         </div>
     </div>
