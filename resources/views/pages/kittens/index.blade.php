@@ -13,27 +13,43 @@
             titre="{{ $portee->code }} — {{ $portee->pere?->nom }} × {{ $portee->mere?->nom }}"
             lede="Nés le {{ $portee->date_naissance->translatedFormat('j F Y') }}. {{ $portee->phraseDisponibilite() ? \Illuminate\Support\Str::ucfirst($portee->phraseDisponibilite()).', ' : '' }}identifiés, vaccinés, vermifugés et inscrits au LOOF." />
 
-        <div class="filters">
-            <a href="{{ route('kittens.index') }}"
+        {{--
+            Des liens, pas des boutons : sans JavaScript ils rechargent la page
+            avec ?statut= et le serveur masque lui-meme les fiches. Le script les
+            intercepte et masque sur place — toutes les fiches sont de toute
+            facon dans le document, c'est ce qui permet au filtre de revenir en
+            arriere, et de fonctionner sur la copie statique qui n'a pas de
+            serveur pour lire la requete.
+        --}}
+        <div class="filters" data-filtre-chatons>
+            <a href="{{ route('kittens.index') }}" data-statut=""
                @class(['btn-filter']) aria-pressed="{{ $statut ? 'false' : 'true' }}"
                role="button">Tous ({{ $total }})</a>
             @foreach(\App\Enums\KittenStatus::cases() as $cas)
                 <a href="{{ route('kittens.index', ['statut' => $cas->value]) }}"
+                   data-statut="{{ $cas->value }}"
                    aria-pressed="{{ $statut === $cas->value ? 'true' : 'false' }}"
                    role="button">{{ $cas->libelle() }}s ({{ $filtres[$cas->value] ?? 0 }})</a>
             @endforeach
         </div>
 
-        <div class="grid">
-            @forelse($chatons as $chaton)
-                <x-kitten-card :chaton="$chaton" />
-            @empty
-                <p class="lede">
-                    Aucun chaton dans cette catégorie pour le moment.
-                    <a class="tlink" href="{{ route('adoption.create') }}">Rejoindre la liste d'attente</a>
-                </p>
-            @endforelse
+        <div class="grid" id="chatons">
+            @foreach($chatons as $chaton)
+                <x-kitten-card :chaton="$chaton"
+                               :hidden="$statut && $statut !== $chaton->statut->value" />
+            @endforeach
         </div>
+
+        {{-- Le message depend des fiches VISIBLES, pas de la portee : filtrer
+             sur un statut sans chaton ne vide pas la collection, il masque
+             tout. --}}
+        @php($visibles = $statut
+            ? $chatons->filter(fn ($k) => $k->statut->value === $statut)->count()
+            : $chatons->count())
+        <p class="lede" id="chatons-vide" @if($visibles > 0) hidden @endif>
+            Aucun chaton dans cette catégorie pour le moment.
+            <a class="tlink" href="{{ route('adoption.create') }}">Rejoindre la liste d'attente</a>
+        </p>
     </div>
 </section>
 

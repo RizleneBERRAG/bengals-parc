@@ -331,6 +331,9 @@ header.nav.stuck{border-bottom-color:var(--rule-ink)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(262px,1fr));gap:26px}
 .fiche{background:var(--ink-2);border:1px solid var(--rule-ink);display:flex;flex-direction:column;text-align:left;
   padding:0;cursor:pointer;transition:border-color .4s var(--ease),transform .4s var(--ease),background .4s}
+/* display:flex l'emporte sur le masquage par defaut du navigateur : sans
+   cette ligne, une fiche marquee hidden par le filtre resterait visible. */
+.fiche[hidden]{display:none}
 .fiche:hover{border-color:var(--bronze-dim);transform:translateY(-4px);background:var(--ink-3)}
 .fiche .ph{aspect-ratio:4/5;overflow:hidden;position:relative;background:var(--ink-3)}
 .fiche .ph img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease);filter:saturate(.96)}

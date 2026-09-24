@@ -1,6 +1,7 @@
 @props(['chaton'])
 
-<a class="fiche @if($chaton->statut === \App\Enums\KittenStatus::Adopte) gone @endif"
+<a {{ $attributes->merge(['class' => 'fiche'.($chaton->statut === \App\Enums\KittenStatus::Adopte ? ' gone' : '')]) }}
+   data-statut="{{ $chaton->statut->value }}"
    href="{{ route('kittens.show', $chaton) }}">
     <span class="ph">
         <x-chip :statut="$chaton->statut" />

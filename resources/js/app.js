@@ -462,3 +462,62 @@ document.querySelectorAll('.viewer').forEach((viewer) => {
         appliquer(new URL(location.href).searchParams.get('categorie') || '');
     });
 })();
+
+/* ------------------------------------------------------------------
+   Filtre des chatons par statut — cote navigateur.
+
+   Le filtre etait entierement cote serveur : chaque clic rechargeait la
+   page avec ?statut=. Cela marche sur le site complet, mais la copie
+   statique n'a pas de serveur pour lire la requete — sur GitHub Pages,
+   cliquer « Disponibles » renvoyait les cinq chatons.
+
+   Le serveur rend maintenant toute la portee et masque les fiches qui ne
+   correspondent pas ; ce script reprend la main. Les liens restent des
+   liens : sans JavaScript, ils rechargent et le serveur fait le travail.
+
+   Meme mecanique que le filtre de la galerie, plus haut.
+   ------------------------------------------------------------------ */
+(() => {
+    const barre = document.querySelector('[data-filtre-chatons]');
+    const grille = document.getElementById('chatons');
+    if (!barre || !grille) return;
+
+    const fiches = [...grille.querySelectorAll('[data-statut]')];
+    const vide = document.getElementById('chatons-vide');
+
+    const appliquer = (statut) => {
+        let visibles = 0;
+
+        for (const fiche of fiches) {
+            const garde = !statut || fiche.dataset.statut === statut;
+            fiche.hidden = !garde;
+            if (garde) visibles++;
+        }
+
+        for (const lien of barre.querySelectorAll('a')) {
+            lien.setAttribute('aria-pressed', String(lien.dataset.statut === statut));
+        }
+
+        if (vide) vide.hidden = visibles > 0;
+    };
+
+    barre.addEventListener('click', (e) => {
+        const lien = e.target.closest('a[data-statut]');
+        if (!lien || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+
+        e.preventDefault();
+        appliquer(lien.dataset.statut);
+
+        /* L'adresse suit, pour que le filtre se partage et que le bouton
+           « precedent » du navigateur le defasse. */
+        history.pushState({ statut: lien.dataset.statut }, '', lien.getAttribute('href'));
+    });
+
+    window.addEventListener('popstate', () => {
+        appliquer(new URL(location.href).searchParams.get('statut') || '');
+    });
+
+    /* Sur la copie statique, le serveur n'a pas pu lire ?statut= : une adresse
+       partagee arrive donc sans filtre applique. On le pose au chargement. */
+    appliquer(new URL(location.href).searchParams.get('statut') || '');
+})();

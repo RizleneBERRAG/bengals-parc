@@ -21,10 +21,16 @@ class KittenController extends Controller
         $filtres = $chatons->countBy(fn (Kitten $k) => $k->statut->value);
 
         return view('pages.kittens.index', [
-            'portee'    => $portee,
-            'chatons'   => $statut
-                ? $chatons->filter(fn (Kitten $k) => $k->statut->value === $statut)
-                : $chatons,
+            'portee' => $portee,
+            /*
+             * Toute la portee est rendue, meme filtree : la vue masque les
+             * fiches qui ne correspondent pas, et le script les redonne sans
+             * recharger. Filtrer ici les retirerait du document, et le filtre
+             * ne pourrait plus revenir en arriere — ni fonctionner du tout sur
+             * la copie statique, qui n'a pas de serveur pour lire ?statut=.
+             * Meme mecanique que la galerie.
+             */
+            'chatons'   => $chatons,
             'total'     => $chatons->count(),
             'filtres'   => $filtres,
             'statut'    => $statut,

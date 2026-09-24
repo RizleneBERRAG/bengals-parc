@@ -21,7 +21,7 @@
           href="https://rizleneberrag.github.io/bengals-parc/fonts/archivo-normal-300-latin.woff2">
     <link rel="stylesheet" href="https://rizleneberrag.github.io/bengals-parc/fonts/fonts.css">
 
-    <link rel="preload" as="style" href="https://rizleneberrag.github.io/bengals-parc/build/assets/app-Bax5LXxi.css" /><link rel="modulepreload" as="script" href="https://rizleneberrag.github.io/bengals-parc/build/assets/app-DCbSRaBB.js" /><link rel="stylesheet" href="https://rizleneberrag.github.io/bengals-parc/build/assets/app-Bax5LXxi.css" data-navigate-track="reload" /><script type="module" src="https://rizleneberrag.github.io/bengals-parc/build/assets/app-DCbSRaBB.js" data-navigate-track="reload"></script>        </head>
+    <link rel="preload" as="style" href="https://rizleneberrag.github.io/bengals-parc/build/assets/app-BS3_4hs-.css" /><link rel="modulepreload" as="script" href="https://rizleneberrag.github.io/bengals-parc/build/assets/app-B0LvwweT.js" /><link rel="stylesheet" href="https://rizleneberrag.github.io/bengals-parc/build/assets/app-BS3_4hs-.css" data-navigate-track="reload" /><script type="module" src="https://rizleneberrag.github.io/bengals-parc/build/assets/app-B0LvwweT.js" data-navigate-track="reload"></script>        </head>
 <body>
     <div id="grain" aria-hidden="true"></div>
 
@@ -99,23 +99,28 @@
         <p class="lede">Nés le 12 juillet 2026. Départs à partir du 4 octobre 2026, identifiés, vaccinés, vermifugés et inscrits au LOOF.</p>    </div>
 </div>
 
-        <div class="filters">
-            <a href="https://rizleneberrag.github.io/bengals-parc/chatons"
+        
+        <div class="filters" data-filtre-chatons>
+            <a href="https://rizleneberrag.github.io/bengals-parc/chatons" data-statut=""
                class="btn-filter" aria-pressed="true"
                role="button">Tous (5)</a>
                             <a href="https://rizleneberrag.github.io/bengals-parc/chatons?statut=disponible"
+                   data-statut="disponible"
                    aria-pressed="false"
                    role="button">Disponibles (2)</a>
                             <a href="https://rizleneberrag.github.io/bengals-parc/chatons?statut=reserve"
+                   data-statut="reserve"
                    aria-pressed="false"
                    role="button">Réservés (2)</a>
                             <a href="https://rizleneberrag.github.io/bengals-parc/chatons?statut=adopte"
+                   data-statut="adopte"
                    aria-pressed="false"
                    role="button">Adoptés (1)</a>
                     </div>
 
-        <div class="grid">
-                            <a class="fiche "
+        <div class="grid" id="chatons">
+                            <a class="fiche"
+   data-statut="disponible"
    href="https://rizleneberrag.github.io/bengals-parc/chatons/xilo">
     <span class="ph">
         <span class="chip dispo">
@@ -135,7 +140,8 @@
         <span class="go">Voir la fiche complète →</span>
     </span>
 </a>
-                            <a class="fiche "
+                            <a class="fiche"
+   data-statut="disponible"
    href="https://rizleneberrag.github.io/bengals-parc/chatons/xia">
     <span class="ph">
         <span class="chip dispo">
@@ -155,7 +161,8 @@
         <span class="go">Voir la fiche complète →</span>
     </span>
 </a>
-                            <a class="fiche "
+                            <a class="fiche"
+   data-statut="reserve"
    href="https://rizleneberrag.github.io/bengals-parc/chatons/xenon">
     <span class="ph">
         <span class="chip reserve">
@@ -175,7 +182,8 @@
         <span class="go">Voir la fiche complète →</span>
     </span>
 </a>
-                            <a class="fiche "
+                            <a class="fiche"
+   data-statut="reserve"
    href="https://rizleneberrag.github.io/bengals-parc/chatons/xali">
     <span class="ph">
         <span class="chip reserve">
@@ -195,7 +203,8 @@
         <span class="go">Voir la fiche complète →</span>
     </span>
 </a>
-                            <a class="fiche  gone "
+                            <a class="fiche gone"
+   data-statut="adopte"
    href="https://rizleneberrag.github.io/bengals-parc/chatons/xuma">
     <span class="ph">
         <span class="chip adopte">
@@ -216,6 +225,12 @@
     </span>
 </a>
                     </div>
+
+        
+                <p class="lede" id="chatons-vide"  hidden >
+            Aucun chaton dans cette catégorie pour le moment.
+            <a class="tlink" href="https://rizleneberrag.github.io/bengals-parc/adopter">Rejoindre la liste d'attente</a>
+        </p>
     </div>
 </section>
 
@@ -225,33 +240,8 @@
         <div class="strip-rail">
                             <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
                    >
-                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/couple.webp" alt="Uzumaki et Uanna" loading="lazy">
-                    <span class="strip-cap">Uzumaki et Uanna</span>
-                </a>
-                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
-                   >
-                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/chatons-pile.webp" alt="Fratrie au repos" loading="lazy">
-                    <span class="strip-cap">Fratrie au repos</span>
-                </a>
-                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
-                   >
-                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/g9.webp" alt="Chaton Bengal vu de dos, montrant les grandes rosettes en donut de sa robe" loading="lazy">
-                    <span class="strip-cap">Les rosettes du dos</span>
-                </a>
-                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
-                   >
-                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/g1.webp" alt="Chaton Bengal assis sur un plaid blanc, rosettes déjà marquées sur les flancs" loading="lazy">
-                    <span class="strip-cap">Premiers pas sur le plaid</span>
-                </a>
-                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
-                   >
-                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/wendy.webp" alt="Wendy, reproductrice de l’élevage, robe brown tabby" loading="lazy">
-                    <span class="strip-cap">Wendy</span>
-                </a>
-                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
-                   >
-                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/k1.webp" alt="Xilo, chaton Bengal de la portée X, robe brown tabby spotted rosetted, rosettes en donut bien dessinées sur le dos" loading="lazy">
-                    <span class="strip-cap">Xilo — X-01</span>
+                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/g6.webp" alt="Chaton Bengal debout devant un panier en paille, robe brown tabby rosetted" loading="lazy">
+                    <span class="strip-cap">Devant le panier</span>
                 </a>
                             <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
                    >
@@ -260,8 +250,53 @@
                 </a>
                             <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
                    >
-                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/g10.webp" alt="Quatre chatons Bengal de la même portée réunis sur un plaid blanc" loading="lazy">
-                    <span class="strip-cap">La fratrie au complet</span>
+                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/wild.webp" alt="Après-midi dans la végétation" loading="lazy">
+                    <span class="strip-cap">Après-midi dans la végétation</span>
+                </a>
+                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
+                   >
+                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/g13.webp" alt="Chaton Bengal debout de profil, rosettes contrastées sur fond clair" loading="lazy">
+                    <span class="strip-cap">De profil</span>
+                </a>
+                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
+                   >
+                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/k1.webp" alt="Xilo, chaton Bengal de la portée X, robe brown tabby spotted rosetted, rosettes en donut bien dessinées sur le dos" loading="lazy">
+                    <span class="strip-cap">Xilo — X-01</span>
+                </a>
+                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
+                   >
+                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/g9.webp" alt="Chaton Bengal vu de dos, montrant les grandes rosettes en donut de sa robe" loading="lazy">
+                    <span class="strip-cap">Les rosettes du dos</span>
+                </a>
+                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
+                   >
+                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/g16.webp" alt="Bengal adulte debout sur un canapé, robe brown tabby rosetted et glitter" loading="lazy">
+                    <span class="strip-cap">Adulte à la maison</span>
+                </a>
+                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
+                   >
+                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/xena.webp" alt="Xena — brown tabby spotted" loading="lazy">
+                    <span class="strip-cap">Xena — brown tabby spotted</span>
+                </a>
+                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
+                   >
+                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/portee.webp" alt="Portée W — mars 2025" loading="lazy">
+                    <span class="strip-cap">Portée W — mars 2025</span>
+                </a>
+                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
+                   >
+                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/ambiance.webp" alt="Fin de journée à la maison" loading="lazy">
+                    <span class="strip-cap">Fin de journée à la maison</span>
+                </a>
+                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
+                   >
+                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/g3.webp" alt="Chaton Bengal assis, collier d’identification violet, près d’une fleur rose" loading="lazy">
+                    <span class="strip-cap">Le collier de la portée</span>
+                </a>
+                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
+                   >
+                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/g7.webp" alt="Chaton Bengal assis de face, rosettes et masque du visage bien dessinés" loading="lazy">
+                    <span class="strip-cap">Portrait de face</span>
                 </a>
                             <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
                    >
@@ -270,58 +305,13 @@
                 </a>
                             <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
                    >
-                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/g15.webp" alt="Chaton Bengal couché sur un plaid blanc au pied d’un panier en paille" loading="lazy">
-                    <span class="strip-cap">Au pied du panier</span>
-                </a>
-                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
-                   >
-                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/g4.webp" alt="Chaton Bengal tenant entre ses pattes une balle en osier tressé" loading="lazy">
-                    <span class="strip-cap">Première balle d’osier</span>
-                </a>
-                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
-                   >
-                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/k3.webp" alt="Xénon, chaton Bengal de la portée X, robe brown charcoal spotted au masque sombre" loading="lazy">
-                    <span class="strip-cap">Xénon — X-03, masque charcoal</span>
-                </a>
-                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
-                   >
-                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/k6.webp" alt="Chatons Bengal de la portée X réunis sur le plaid de l’élevage" loading="lazy">
-                    <span class="strip-cap">Portée X</span>
-                </a>
-                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
-                   >
-                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/uzu-harnais.webp" alt="Uzumaki au jardin" loading="lazy">
-                    <span class="strip-cap">Uzumaki au jardin</span>
+                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/hero-duo.webp" alt="Nos Bengals à la maison" loading="lazy">
+                    <span class="strip-cap">Nos Bengals à la maison</span>
                 </a>
                             <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
                     aria-hidden="true" tabindex="-1" >
-                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/couple.webp" alt="" loading="lazy">
-                    <span class="strip-cap">Uzumaki et Uanna</span>
-                </a>
-                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
-                    aria-hidden="true" tabindex="-1" >
-                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/chatons-pile.webp" alt="" loading="lazy">
-                    <span class="strip-cap">Fratrie au repos</span>
-                </a>
-                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
-                    aria-hidden="true" tabindex="-1" >
-                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/g9.webp" alt="" loading="lazy">
-                    <span class="strip-cap">Les rosettes du dos</span>
-                </a>
-                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
-                    aria-hidden="true" tabindex="-1" >
-                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/g1.webp" alt="" loading="lazy">
-                    <span class="strip-cap">Premiers pas sur le plaid</span>
-                </a>
-                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
-                    aria-hidden="true" tabindex="-1" >
-                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/wendy.webp" alt="" loading="lazy">
-                    <span class="strip-cap">Wendy</span>
-                </a>
-                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
-                    aria-hidden="true" tabindex="-1" >
-                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/k1.webp" alt="" loading="lazy">
-                    <span class="strip-cap">Xilo — X-01</span>
+                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/g6.webp" alt="" loading="lazy">
+                    <span class="strip-cap">Devant le panier</span>
                 </a>
                             <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
                     aria-hidden="true" tabindex="-1" >
@@ -330,8 +320,53 @@
                 </a>
                             <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
                     aria-hidden="true" tabindex="-1" >
-                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/g10.webp" alt="" loading="lazy">
-                    <span class="strip-cap">La fratrie au complet</span>
+                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/wild.webp" alt="" loading="lazy">
+                    <span class="strip-cap">Après-midi dans la végétation</span>
+                </a>
+                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
+                    aria-hidden="true" tabindex="-1" >
+                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/g13.webp" alt="" loading="lazy">
+                    <span class="strip-cap">De profil</span>
+                </a>
+                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
+                    aria-hidden="true" tabindex="-1" >
+                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/k1.webp" alt="" loading="lazy">
+                    <span class="strip-cap">Xilo — X-01</span>
+                </a>
+                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
+                    aria-hidden="true" tabindex="-1" >
+                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/g9.webp" alt="" loading="lazy">
+                    <span class="strip-cap">Les rosettes du dos</span>
+                </a>
+                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
+                    aria-hidden="true" tabindex="-1" >
+                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/g16.webp" alt="" loading="lazy">
+                    <span class="strip-cap">Adulte à la maison</span>
+                </a>
+                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
+                    aria-hidden="true" tabindex="-1" >
+                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/xena.webp" alt="" loading="lazy">
+                    <span class="strip-cap">Xena — brown tabby spotted</span>
+                </a>
+                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
+                    aria-hidden="true" tabindex="-1" >
+                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/portee.webp" alt="" loading="lazy">
+                    <span class="strip-cap">Portée W — mars 2025</span>
+                </a>
+                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
+                    aria-hidden="true" tabindex="-1" >
+                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/ambiance.webp" alt="" loading="lazy">
+                    <span class="strip-cap">Fin de journée à la maison</span>
+                </a>
+                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
+                    aria-hidden="true" tabindex="-1" >
+                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/g3.webp" alt="" loading="lazy">
+                    <span class="strip-cap">Le collier de la portée</span>
+                </a>
+                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
+                    aria-hidden="true" tabindex="-1" >
+                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/g7.webp" alt="" loading="lazy">
+                    <span class="strip-cap">Portrait de face</span>
                 </a>
                             <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
                     aria-hidden="true" tabindex="-1" >
@@ -340,28 +375,8 @@
                 </a>
                             <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
                     aria-hidden="true" tabindex="-1" >
-                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/g15.webp" alt="" loading="lazy">
-                    <span class="strip-cap">Au pied du panier</span>
-                </a>
-                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
-                    aria-hidden="true" tabindex="-1" >
-                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/g4.webp" alt="" loading="lazy">
-                    <span class="strip-cap">Première balle d’osier</span>
-                </a>
-                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
-                    aria-hidden="true" tabindex="-1" >
-                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/k3.webp" alt="" loading="lazy">
-                    <span class="strip-cap">Xénon — X-03, masque charcoal</span>
-                </a>
-                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
-                    aria-hidden="true" tabindex="-1" >
-                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/k6.webp" alt="" loading="lazy">
-                    <span class="strip-cap">Portée X</span>
-                </a>
-                            <a class="strip-item" href="https://rizleneberrag.github.io/bengals-parc/galerie"
-                    aria-hidden="true" tabindex="-1" >
-                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/uzu-harnais.webp" alt="" loading="lazy">
-                    <span class="strip-cap">Uzumaki au jardin</span>
+                    <img src="https://rizleneberrag.github.io/bengals-parc/images/cats/hero-duo.webp" alt="" loading="lazy">
+                    <span class="strip-cap">Nos Bengals à la maison</span>
                 </a>
                     </div>
     </div>
