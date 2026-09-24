@@ -7,21 +7,54 @@ const reduit = () => window.matchMedia('(prefers-reduced-motion: reduce)').match
 const burger = document.getElementById('burger');
 const menu = document.getElementById('menu');
 
+/* Le panneau couvre l'ecran : sans ce verrou, le doigt fait defiler la page
+   derriere lui et on repart de la mauvaise hauteur en refermant. */
+const verrouiller = (actif) => {
+    document.body.style.overflow = actif ? 'hidden' : '';
+};
+
+const basculerMenu = (ouvrir) => {
+    if (!burger || !menu) return;
+    burger.setAttribute('aria-expanded', String(ouvrir));
+    menu.hidden = !ouvrir;
+    verrouiller(ouvrir);
+    // Voir app.css : le bandeau doit cesser d'etre le bloc conteneur du
+    // panneau, sans quoi celui-ci est rogne a la hauteur de la barre.
+    document.getElementById('nav')?.classList.toggle('menu-ouvert', ouvrir);
+};
+
 const syncMenu = () => {
     if (!burger || !menu) return;
     if (window.innerWidth > 1000) {
+        // Retour au bandeau horizontal : le menu redevient visible en
+        // permanence, et le verrou n'a plus lieu d'etre.
         menu.hidden = false;
         burger.setAttribute('aria-expanded', 'false');
+        verrouiller(false);
+        document.getElementById('nav')?.classList.remove('menu-ouvert');
     } else if (burger.getAttribute('aria-expanded') !== 'true') {
         menu.hidden = true;
     }
 };
 
 burger?.addEventListener('click', () => {
-    const ouvert = burger.getAttribute('aria-expanded') === 'true';
-    burger.setAttribute('aria-expanded', String(!ouvert));
-    menu.hidden = ouvert;
+    basculerMenu(burger.getAttribute('aria-expanded') !== 'true');
 });
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && burger?.getAttribute('aria-expanded') === 'true') {
+        basculerMenu(false);
+        burger.focus();
+    }
+});
+
+/* Les liens d'ancre ne changent pas de page : sans cela le panneau resterait
+   ouvert par-dessus l'endroit vers lequel il vient de faire defiler. */
+menu?.addEventListener('click', (e) => {
+    const lien = e.target.closest('a[href*="#"]');
+    if (lien && burger?.getAttribute('aria-expanded') === 'true') basculerMenu(false);
+});
+
 window.addEventListener('resize', syncMenu);
 syncMenu();
 

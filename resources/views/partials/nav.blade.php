@@ -10,7 +10,7 @@
             <small>Chatterie · L'Isle d'Abeau</small>
         </a>
 
-        <nav class="menu" id="menu">
+        <nav class="menu" id="menu" aria-label="Navigation principale">
             <a href="{{ route('kittens.index') }}" @if(request()->routeIs('kittens.*')) aria-current="page" @endif>Nos chatons</a>
             <a href="{{ route('cats.index') }}"    @if(request()->routeIs('cats.*'))    aria-current="page" @endif>L'élevage</a>
             <a href="{{ route('breed') }}"         @if(request()->routeIs('breed'))     aria-current="page" @endif>Le Bengal</a>
@@ -18,10 +18,20 @@
             <a href="{{ route('adoption.create') }}" @if(request()->routeIs('adoption.*')) aria-current="page" @endif>Adopter</a>
             <a href="{{ route('faq') }}"           @if(request()->routeIs('faq'))       aria-current="page" @endif>Questions</a>
             <a href="{{ route('contact') }}"       @if(request()->routeIs('contact'))   aria-current="page" @endif>Contact</a>
-            @if($insta)
-                {{-- L'icône du bandeau est masquée sous 1000px : on garde l'entrée ici. --}}
-                <a class="menu-insta" href="{{ $insta }}" target="_blank" rel="noopener noreferrer">Instagram</a>
-            @endif
+
+            {{-- Pied du panneau, affiche seulement quand le menu EST un panneau.
+                 Sous 1000px le bandeau masque le numero et l'icone Instagram :
+                 sans ce bloc, le telephone — la facon dont on joint un elevage —
+                 disparait de toute la navigation. --}}
+            <div class="menu-pied">
+                <a class="menu-appel" href="{{ \App\Models\Setting::telephoneLien() }}">
+                    <span class="k">Appeler l'élevage</span>
+                    <span class="v">{{ $tel }}</span>
+                </a>
+                @if($insta)
+                    <a class="menu-insta" href="{{ $insta }}" target="_blank" rel="noopener noreferrer">Instagram</a>
+                @endif
+            </div>
         </nav>
 
         <div class="navcta">
@@ -29,7 +39,13 @@
                 <x-social-link :url="$insta" />
             @endif
             <a class="tel" href="{{ \App\Models\Setting::telephoneLien() }}">{{ $tel }}</a>
-            <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
+            {{-- L'intitule suit aria-expanded, que le script tient deja a jour :
+                 un seul etat a maintenir, jamais de bouton « Menu » sur un menu
+                 ouvert. --}}
+            <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="menu">
+                <span class="b-ouvrir">Menu</span>
+                <span class="b-fermer">Fermer</span>
+            </button>
         </div>
     </div>
 

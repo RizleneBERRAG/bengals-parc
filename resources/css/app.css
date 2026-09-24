@@ -133,14 +133,135 @@ header.nav.stuck{border-bottom-color:var(--rule-ink)}
 .tel:hover{color:var(--bronze-lt)}
 .burger{display:none;background:none;border:1px solid var(--rule-ink);padding:10px 14px;border-radius:1px;cursor:pointer;
   font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase}
+.burger .b-fermer{display:none}
+.burger[aria-expanded="true"] .b-ouvrir{display:none}
+.burger[aria-expanded="true"] .b-fermer{display:inline}
+
+/* Le pied n'existe que dans le panneau : au-dessus de 1000px le bandeau
+   porte deja le telephone et l'icone Instagram. */
+.menu-pied{display:none}
+
+/* -------------------------------------------------------------------
+   Le panneau de navigation, sous 1000px.
+
+   Il etait une liste de liens posee sur du noir : rien ne separait les
+   entrees, la marque disparaissait derriere le panneau, le bouton
+   affichait encore « Menu » une fois ouvert et le telephone n'etait
+   joignable nulle part.
+
+   Il est maintenant construit comme le reste du site — une numerotation
+   en capitales mono, des filets, un pied. Le bandeau reste au-dessus :
+   on voit toujours ou on est, et par quoi refermer.
+   ------------------------------------------------------------------ */
 @media(max-width:1000px){
-  .menu{position:fixed;inset:0 0 auto 0;padding:104px 26px 38px;background:var(--ink);flex-direction:column;
-    align-items:flex-start;gap:2px;border-bottom:1px solid var(--rule-ink)}
+  /* La marque et le bouton restent au-dessus du panneau : ils sont ses
+     freres dans la barre, et le panneau porte un z-index — sans le leur,
+     il les recouvre. On voit ainsi toujours ou on est et par quoi
+     refermer. */
+  .navin{position:relative;z-index:2}
+  .navin > .brand,
+  .navin > .navcta{position:relative;z-index:2}
+
+  /* Le flou du bandeau et son nom de transition font de lui le bloc
+     conteneur de tout descendant en position fixed : inset:0 se calait
+     alors sur les 71px de la barre au lieu de l'ecran, et le panneau
+     etait rogne. On les retire le temps de l'ouverture — le panneau est
+     opaque, il n'y a plus rien a flouter derriere. */
+  header.nav.menu-ouvert{
+    backdrop-filter:none;-webkit-backdrop-filter:none;
+    view-transition-name:none;
+    background:transparent;border-bottom-color:transparent}
+
+  .menu{
+    position:fixed;inset:0;z-index:1;
+    flex-direction:column;align-items:stretch;gap:0;
+    padding:calc(70px + env(safe-area-inset-top,0px) + 30px) 22px
+            calc(26px + env(safe-area-inset-bottom,0px));
+    background:var(--ink);
+    overflow-y:auto;overscroll-behavior:contain;
+    counter-reset:entree;
+  }
   .menu[hidden]{display:none}
-  .menu a{font-family:var(--display);font-size:1.85rem;color:var(--ivory);padding-block:9px}
-  .menu a::after{display:none}
+
+  .menu > a{
+    position:relative;
+    display:flex;align-items:baseline;gap:15px;
+    font-family:var(--display);
+    /* clamp : tient sur un ecran de 320px sans se couper en deux lignes. */
+    font-size:clamp(1.5rem,6.8vw,1.95rem);
+    line-height:1.08;
+    color:var(--ivory);
+    padding-block:16px;
+    border-top:1px solid var(--rule-ink-2);
+  }
+  .menu > a:first-of-type{border-top:0}
+
+  .menu > a::before{
+    counter-increment:entree;
+    content:counter(entree,decimal-leading-zero);
+    flex:0 0 auto;
+    font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;
+    color:var(--bronze);
+  }
+
+  /* La page courante : un filet de bronze qui sort dans la marge, la meme
+     marque que les filets du reste du site. */
+  .menu > a[aria-current="page"]{color:var(--bronze-lt)}
+  .menu > a[aria-current="page"]::after{
+    content:"";display:block;position:absolute;left:-22px;top:calc(50% - 1px);
+    width:14px;height:1px;background:var(--bronze)}
+
+  .menu-pied{
+    display:flex;flex-direction:column;gap:12px;
+    margin-top:auto;padding-top:30px;
+  }
+  .menu-appel{
+    display:flex;flex-direction:column;gap:8px;
+    padding:16px 18px;
+    border:1px solid var(--rule-ink);
+    text-decoration:none;
+  }
+  .menu-appel .k{font-family:var(--mono);font-size:9px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--bronze)}
+  .menu-appel .v{font-family:var(--display);font-size:1.35rem;color:var(--ivory)}
+  .menu-insta{
+    font-family:var(--mono);font-size:10px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--ivory-dim);
+    text-align:center;padding-block:10px;text-decoration:none}
+
   .burger{display:block;position:relative;z-index:2}
   .navcta .tel{display:none}
+}
+
+/* Les entrees arrivent l'une apres l'autre, tres vite : le panneau se
+   deplie au lieu d'apparaitre d'un bloc. Rien de tout cela si le
+   navigateur annonce qu'on prefere moins de mouvement. */
+@media(max-width:1000px) and (prefers-reduced-motion:no-preference){
+  .menu:not([hidden]) > a,
+  .menu:not([hidden]) > .menu-pied{animation:menuDeplie .45s var(--ease) both}
+  .menu:not([hidden]) > a:nth-of-type(1){animation-delay:.03s}
+  .menu:not([hidden]) > a:nth-of-type(2){animation-delay:.06s}
+  .menu:not([hidden]) > a:nth-of-type(3){animation-delay:.09s}
+  .menu:not([hidden]) > a:nth-of-type(4){animation-delay:.12s}
+  .menu:not([hidden]) > a:nth-of-type(5){animation-delay:.15s}
+  .menu:not([hidden]) > a:nth-of-type(6){animation-delay:.18s}
+  .menu:not([hidden]) > a:nth-of-type(7){animation-delay:.21s}
+  .menu:not([hidden]) > .menu-pied{animation-delay:.24s}
+}
+@keyframes menuDeplie{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+
+/* Sur tablette le panneau reste le meme, mais des filets de 760px de long
+   pour sept mots font une page vide. On ramene la colonne a une largeur de
+   lecture ; le repere de page courante suit, il se place par rapport au
+   lien et non par rapport au bord. */
+@media(min-width:620px) and (max-width:1000px){
+  .menu{padding-inline:max(22px,calc((100% - 520px) / 2))}
+}
+
+/* Sous 360px la ligne « Chatterie · L'Isle d'Abeau » se cassait en deux et
+   passait sous le nom. Elle tient d'une piece en resserrant l'interlettre. */
+@media(max-width:360px){
+  .brand small{font-size:8px;letter-spacing:.17em}
 }
 
 /* ---------- hero ---------- */
@@ -1052,4 +1173,47 @@ footer{view-transition-name:pied}
   /* height:100% prend le pas sur la regle generale height:auto : ici
      c'est le cadre qui commande, et la photo le remplit. */
   .masonry.defile figure img{width:100%;height:100%;object-fit:cover}
+}
+
+/* -------------------------------------------------------------------
+   Le pied de page sur telephone.
+
+   En une seule colonne il faisait 1141px — un ecran et demi — pour
+   quatorze liens poses a la suite, sans rien pour separer les quatre
+   groupes. Et le bloc Contact donnait le numero et le courriel en
+   toutes lettres, puis les repetait juste en dessous en pastilles.
+
+   Les deux groupes de navigation passent cote a cote : mesure, un seul
+   libelle sur huit se replie. Deux filets suffisent a poser les trois
+   temps du pied — qui nous sommes, ou aller, comment nous joindre.
+   ------------------------------------------------------------------ */
+@media(max-width:560px){
+  footer{padding-block:44px 28px}
+
+  .fgrid{column-gap:18px;row-gap:0}
+
+  /* La presentation et le contact tiennent la largeur ; entre les deux,
+     les deux colonnes de liens partagent la ligne. */
+  .fgrid > :first-child,
+  .fgrid > :last-child{grid-column:1 / -1}
+  .fgrid > :first-child{padding-bottom:24px;margin-bottom:24px;
+    border-bottom:1px solid var(--rule-ink-2)}
+  .fgrid > :last-child{padding-top:24px;margin-top:24px;
+    border-top:1px solid var(--rule-ink-2)}
+
+  footer h4{margin-bottom:6px}
+
+  /* Le numero et le courriel sont en toutes lettres juste au-dessus : les
+     pastilles n'en etaient que la redite. Instagram reste, il n'existe
+     nulle part ailleurs dans le pied. */
+  footer .socials .social--mail,
+  footer .socials .social--tel{display:none}
+
+  .fbot{margin-top:30px}
+}
+
+/* Les deux colonnes seulement la ou elles tiennent : a 320px, mesure, trois
+   libelles sur huit se replient — la colonne unique y reste plus nette. */
+@media(min-width:361px) and (max-width:560px){
+  .fgrid{grid-template-columns:1fr 1fr}
 }
