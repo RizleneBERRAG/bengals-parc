@@ -25,7 +25,10 @@
 html{scroll-behavior:smooth;scroll-padding-top:clamp(112px,14vh,140px)}
 body{margin:0;background:var(--ink);color:var(--ivory);font-family:var(--body);font-size:16.5px;line-height:1.62;
   -webkit-font-smoothing:antialiased;overflow-x:hidden}
-img{max-width:100%;display:block}
+/* height:auto est indispensable des lors que les images declarent leur hauteur :
+   sans lui le navigateur applique l attribut height litteralement et deforme
+   l image des que la largeur est contrainte. */
+img{max-width:100%;height:auto;display:block}
 a{color:inherit}
 button{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--bronze-lt);outline-offset:3px}
