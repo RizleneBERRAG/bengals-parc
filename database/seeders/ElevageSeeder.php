@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Enums\CatRole;
 use App\Enums\HealthTestType;
+use App\Console\Commands\SyncPhotos;
 use App\Models\Cat;
 use App\Models\Faq;
 use App\Models\HealthTest;
@@ -231,12 +232,24 @@ class ElevageSeeder extends Seeder
         $ordre = 0;
 
         foreach ($this->contenu['GALERIE'] as $g) {
+            /*
+             * Les descriptions detaillees vivent dans SyncPhotos::LEGENDES, une
+             * seule liste pour toute l'application : la commande de
+             * synchronisation et ce seeder y puisent les memes textes. Les
+             * redire ici les ferait diverger, et c'est une installation neuve
+             * qui aurait retrouve les « G1 » a « G16 » sur la galerie.
+             *
+             * Le texte alternatif decrit ce qu'on voit, la legende est
+             * editoriale : ce ne sont pas les memes mots.
+             */
+            $connue = SyncPhotos::LEGENDES[$g['f']] ?? null;
+
             Photo::updateOrCreate(
                 ['attachable_type' => Litter::class, 'attachable_id' => 0, 'chemin' => 'images/cats/'.$g['f'].'.webp'],
                 [
-                    'alt'       => $g['c'],
-                    'legende'   => $g['c'],
-                    'categorie' => $g['cat'],
+                    'alt'       => $connue[2] ?? $g['c'],
+                    'legende'   => $connue[0] ?? $g['c'],
+                    'categorie' => $connue[1] ?? $g['cat'],
                     'ordre'     => $ordre++,
                 ],
             );

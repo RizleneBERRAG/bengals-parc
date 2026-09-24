@@ -67,6 +67,45 @@ class GalerieTest extends TestCase
         }
     }
 
+    /**
+     * Seize photos s'appelaient « G1 » a « G16 » sur la galerie — et c'etait aussi
+     * leur texte alternatif. La commande de synchronisation deduit une legende du
+     * nom de fichier quand elle n'en connait pas : un pis-aller qui ne doit pas
+     * finir en ligne.
+     */
+    public function test_aucune_legende_ne_reprend_le_nom_de_fichier(): void
+    {
+        $fautives = [];
+
+        foreach (Photo::publiees()->get() as $photo) {
+            $nom = pathinfo($photo->chemin, PATHINFO_FILENAME);
+            $deduite = ucfirst(str_replace(['-', '_'], ' ', $nom));
+
+            // « Wendy » est le nom de la chatte : la coincidence est legitime.
+            if (strcasecmp(trim($photo->legende), $deduite) === 0 && mb_strlen($nom) <= 4 && preg_match('/\d/', $nom)) {
+                $fautives[] = $photo->chemin.' → '.$photo->legende;
+            }
+        }
+
+        $this->assertSame([], $fautives, 'Légendes déduites du nom de fichier.');
+    }
+
+    /**
+     * Le texte alternatif decrit ce qu'on voit ; la legende est editoriale. Les
+     * confondre etait le reproche fait au site actuel du client.
+     */
+    public function test_chaque_photo_a_un_texte_alternatif_descriptif(): void
+    {
+        foreach (Photo::publiees()->get() as $photo) {
+            $this->assertNotEmpty(trim($photo->alt), "Texte alternatif vide : {$photo->chemin}");
+            $this->assertGreaterThanOrEqual(
+                12,
+                mb_strlen(trim($photo->alt)),
+                "Texte alternatif trop court pour décrire quoi que ce soit : {$photo->chemin} → « {$photo->alt} »"
+            );
+        }
+    }
+
     public function test_toutes_les_photos_sont_rendues_quel_que_soit_le_filtre(): void
     {
         $total = Photo::publiees()->count();
