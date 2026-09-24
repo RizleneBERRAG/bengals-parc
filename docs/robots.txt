@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /admin
+
+Sitemap: https://rizleneberrag.github.io/bengals-parc/sitemap.xml
