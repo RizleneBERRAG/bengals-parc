@@ -137,12 +137,12 @@ header.nav.stuck{border-bottom-color:var(--rule-ink)}
 .burger[aria-expanded="true"] .b-ouvrir{display:none}
 .burger[aria-expanded="true"] .b-fermer{display:inline}
 
-/* Le pied n'existe que dans le panneau : au-dessus de 1000px le bandeau
+/* Le pied n'existe que dans le panneau : au-dessus de 1100px le bandeau
    porte deja le telephone et l'icone Instagram. */
 .menu-pied{display:none}
 
 /* -------------------------------------------------------------------
-   Le panneau de navigation, sous 1000px.
+   Le panneau de navigation, sous 1100px.
 
    Il etait une liste de liens posee sur du noir : rien ne separait les
    entrees, la marque disparaissait derriere le panneau, le bouton
@@ -153,7 +153,7 @@ header.nav.stuck{border-bottom-color:var(--rule-ink)}
    en capitales mono, des filets, un pied. Le bandeau reste au-dessus :
    on voit toujours ou on est, et par quoi refermer.
    ------------------------------------------------------------------ */
-@media(max-width:1000px){
+@media(max-width:1100px){
   /* La marque et le bouton restent au-dessus du panneau : ils sont ses
      freres dans la barre, et le panneau porte un z-index — sans le leur,
      il les recouvre. On voit ainsi toujours ou on est et par quoi
@@ -224,10 +224,11 @@ header.nav.stuck{border-bottom-color:var(--rule-ink)}
   .menu-appel .k{font-family:var(--mono);font-size:9px;letter-spacing:.2em;
     text-transform:uppercase;color:var(--bronze)}
   .menu-appel .v{font-family:var(--display);font-size:1.35rem;color:var(--ivory)}
-  .menu-insta{
+  .menu-reseaux{display:flex;justify-content:center;gap:26px}
+  .menu-reseaux a{
     font-family:var(--mono);font-size:10px;letter-spacing:.18em;
     text-transform:uppercase;color:var(--ivory-dim);
-    text-align:center;padding-block:10px;text-decoration:none}
+    padding-block:10px;text-decoration:none}
 
   .burger{display:block;position:relative;z-index:2}
   .navcta .tel{display:none}
@@ -236,7 +237,7 @@ header.nav.stuck{border-bottom-color:var(--rule-ink)}
 /* Les entrees arrivent l'une apres l'autre, tres vite : le panneau se
    deplie au lieu d'apparaitre d'un bloc. Rien de tout cela si le
    navigateur annonce qu'on prefere moins de mouvement. */
-@media(max-width:1000px) and (prefers-reduced-motion:no-preference){
+@media(max-width:1100px) and (prefers-reduced-motion:no-preference){
   .menu:not([hidden]) > a,
   .menu:not([hidden]) > .menu-pied{animation:menuDeplie .45s var(--ease) both}
   .menu:not([hidden]) > a:nth-of-type(1){animation-delay:.03s}
@@ -254,7 +255,7 @@ header.nav.stuck{border-bottom-color:var(--rule-ink)}
    pour sept mots font une page vide. On ramene la colonne a une largeur de
    lecture ; le repere de page courante suit, il se place par rapport au
    lien et non par rapport au bord. */
-@media(min-width:620px) and (max-width:1000px){
+@media(min-width:620px) and (max-width:1100px){
   .menu{padding-inline:max(22px,calc((100% - 520px) / 2))}
 }
 
@@ -727,6 +728,13 @@ a.figure{display:block;overflow:hidden}
   --mark-lueur:238,42,123;
   --mark-actif:#FFF1F7}
 
+/* TikTok aussi : le cyan et le magenta de son logo, dans l'anneau. Le
+   glyphe lui-meme reste en aplat uni, comme ses regles de marque l'exigent. */
+.social--tiktok .social-mark{
+  --mark-anneau:conic-gradient(from 205deg,#25F4EE,#FE2C55 40%,#25F4EE 74%,#FE2C55);
+  --mark-lueur:254,44,85;
+  --mark-actif:#FFF1F4}
+
 /* L'anneau vit sur un pseudo-élément, et c'est lui seul qui tourne.
    Le glyphe n'est jamais transformé.
    Ne pas revenir à une rotation du bouton compensée par une rotation inverse du
@@ -753,6 +761,7 @@ footer .social-mark{--mark-fond:var(--ink-2)}
 .paper .social{color:var(--bronze-dim)}
 .paper .social-mark{--mark-fond:var(--paper);border-color:var(--paper-3);--mark-actif:var(--sepia)}
 .paper .social--instagram .social-mark{--mark-actif:#C21E68}
+.paper .social--tiktok .social-mark{--mark-actif:#D81B3F}
 
 /* Respecte le réglage système « réduire les animations ». */
 @media(prefers-reduced-motion:reduce){
@@ -760,10 +769,12 @@ footer .social-mark{--mark-fond:var(--ink-2)}
   .social:hover .social-mark::before,
   .social:focus-visible .social-mark::before{transform:none}
 }
-@media(max-width:1000px){.navcta .social{display:none}}
+@media(max-width:1100px){.navcta .social{display:none}}
 
-.menu-insta{display:none}
-@media(max-width:1000px){.menu-insta{display:block}}
+/* Les entrees Instagram et TikTok du panneau : le bandeau masque les icones
+   sous 1100px, ce sont elles qui prennent le relais. */
+.menu-reseaux{display:none}
+@media(max-width:1100px){.menu-reseaux{display:flex}}
 
 /* ------------------------------------------------------------------
    Ruban de photos défilant

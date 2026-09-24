@@ -76,6 +76,7 @@ class ElevageSeeder extends Seeder
             ['cle' => 'contact.avis_google',  'libelle' => 'Lien vers les avis Google', 'valeur' => null, 'groupe' => 'contact'],
             ['cle' => 'contact.email',        'libelle' => 'Email',                    'valeur' => 'bengalsparc@gmail.com',    'groupe' => 'contact'],
             ['cle' => 'contact.instagram',    'libelle' => 'Instagram',                'valeur' => 'https://www.instagram.com/bengals_parc/', 'groupe' => 'contact'],
+            ['cle' => 'contact.tiktok',       'libelle' => 'TikTok',                   'valeur' => 'https://www.tiktok.com/@bengals.parc',    'groupe' => 'contact'],
             // Mentions obligatoires : vides, donc signalees "À compléter" sur le site.
             ['cle' => 'legal.siren',          'libelle' => 'SIREN / SIRET',            'valeur' => null, 'groupe' => 'legal', 'est_obligatoire' => true],
             ['cle' => 'legal.certificat',     'libelle' => 'N° de certificat de capacité', 'valeur' => null, 'groupe' => 'legal', 'est_obligatoire' => true],

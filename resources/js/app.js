@@ -25,7 +25,7 @@ const basculerMenu = (ouvrir) => {
 
 const syncMenu = () => {
     if (!burger || !menu) return;
-    if (window.innerWidth > 1000) {
+    if (window.innerWidth > 1100) {
         // Retour au bandeau horizontal : le menu redevient visible en
         // permanence, et le verrou n'a plus lieu d'etre.
         menu.hidden = false;

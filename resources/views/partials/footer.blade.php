@@ -2,6 +2,7 @@
     $tel  = \App\Models\Setting::get('contact.telephone', '06 24 48 89 36');
     $mail = \App\Models\Setting::get('contact.email', 'bengalsparc@gmail.com');
     $insta = \App\Models\Setting::get('contact.instagram');
+    $tiktok = \App\Models\Setting::get('contact.tiktok');
     $siren = \App\Models\Setting::get('legal.siren');
 @endphp
 
@@ -44,6 +45,9 @@
                 <div class="socials" style="margin-top:20px">
                     @if($insta)
                         <x-social-link :url="$insta" />
+                    @endif
+                    @if($tiktok)
+                        <x-social-link type="tiktok" :url="$tiktok" handle="@bengals.parc" />
                     @endif
                     <x-social-link type="mail" :url="'mailto:'.$mail" :handle="$mail" />
                     <x-social-link type="tel" :url="\App\Models\Setting::telephoneLien()" :handle="$tel" />

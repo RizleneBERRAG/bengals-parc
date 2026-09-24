@@ -57,6 +57,7 @@
     ])),
     'sameAs' => array_values(array_filter([
         \App\Models\Setting::get('contact.instagram'),
+        \App\Models\Setting::get('contact.tiktok'),
     ])),
     'availableLanguage' => 'fr',
 ];
