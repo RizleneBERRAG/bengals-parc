@@ -602,11 +602,6 @@ footer a:hover{color:var(--bronze-lt)}
 .fcontact-item:hover .v,
 .fcontact-item:focus-visible .v{color:var(--bronze-lt)}
 
-/* Le numero et le courriel sont nommes juste au-dessus : les pastilles n'en
-   etaient que la redite. La rangee garde Instagram et TikTok, les deux seules
-   choses qu'elle apporte encore. */
-footer .socials .social--mail,
-footer .socials .social--tel{display:none}
 
 .fbot{margin-top:44px;padding-top:22px;border-top:1px solid var(--rule-ink);display:flex;flex-wrap:wrap;gap:12px 26px;
   justify-content:space-between;font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--ivory-dim)}
