@@ -214,10 +214,19 @@
 <section class="band">
     <div class="wrap">
         <x-section-head eyebrow="La maison" titre="Ils grandissent ici" />
-        <div class="masonry" id="mas">
+        {{-- defile : sur telephone les douze photos passent en bande plutot
+             que de s empiler sur douze ecrans. Voir app.css.
+
+             data-lightbox : les vignettes portaient deja data-full et le
+             curseur « loupe », mais rien ne s ouvrait. En bande la photo est
+             plus petite encore : il faut pouvoir l agrandir. --}}
+        <div class="masonry defile" id="mas" data-lightbox>
             @foreach($photos as $photo)
                 <figure data-full="{{ asset($photo->chemin) }}" data-legende="{{ $photo->legende }}">
-                    <img src="{{ asset($photo->chemin) }}" alt="{{ $photo->alt }}" loading="lazy">
+                    <img src="{{ asset($photo->chemin) }}" alt="{{ $photo->alt }}" loading="lazy"
+                         @if($photo->largeur && $photo->hauteur)
+                             width="{{ $photo->largeur }}" height="{{ $photo->hauteur }}"
+                         @endif>
                     <figcaption>{{ $photo->legende }}</figcaption>
                 </figure>
             @endforeach
