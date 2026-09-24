@@ -35,10 +35,13 @@
 
         {{-- Les vignettes sont la liste de reference : la visionneuse comme la
              vue plein ecran lisent leurs data-full. --}}
-        <div class="viewer-rail" role="tablist" aria-label="Photos de la fiche">
+        {{-- Un groupe de boutons, pas un tablist : il n'y a pas de panneau a
+             controler, et annoncer des onglets inexistants egare un lecteur
+             d'ecran. La vignette courante se signale par aria-current. --}}
+        <div class="viewer-rail" role="group" aria-label="Photos de la fiche">
             @foreach($photos as $i => $photo)
-                <button type="button" role="tab" class="viewer-vignette"
-                        aria-selected="{{ $i === 0 ? 'true' : 'false' }}"
+                <button type="button" class="viewer-vignette"
+                        @if($i === 0) aria-current="true" @endif
                         tabindex="{{ $i === 0 ? '0' : '-1' }}"
                         data-full="{{ asset($photo['chemin']) }}"
                         data-legende="{{ $photo['legende'] ?: $photo['alt'] }}">

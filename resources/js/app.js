@@ -137,7 +137,7 @@ document.addEventListener('click', (e) => {
         const conteneur = scene.closest('[data-lightbox]');
         if (!conteneur) return;
         const items = listeDe(conteneur);
-        return ouvrir(items, items.findIndex((v) => v.getAttribute('aria-selected') === 'true'));
+        return ouvrir(items, items.findIndex((v) => v.getAttribute('aria-current') === 'true'));
     }
 });
 
@@ -269,7 +269,8 @@ document.querySelectorAll('.viewer').forEach((viewer) => {
 
         vues.forEach((img, n) => img.classList.toggle('visible', n === courant));
         vignettes.forEach((v, n) => {
-            v.setAttribute('aria-selected', String(n === courant));
+            if (n === courant) v.setAttribute('aria-current', 'true');
+            else v.removeAttribute('aria-current');
             v.tabIndex = n === courant ? 0 : -1;
         });
 
