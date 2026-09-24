@@ -359,3 +359,57 @@ document.querySelectorAll('.viewer').forEach((viewer) => {
     ouvrirLaCible();
     window.addEventListener('hashchange', ouvrirLaCible);
 })();
+
+/* ------------------------------------------------------------------
+   Galerie — filtrer sur place
+
+   Les filtres sont des liens : sans JavaScript ils rechargent la page
+   avec ?categorie= et fonctionnent quand meme. Ici on les intercepte et
+   on masque les figures, sans recharger ni perdre la position.
+
+   Le serveur rendait deja toutes les photos — il les filtrait a
+   l'affichage apres les avoir toutes chargees — donc rien de plus n'est
+   telecharge.
+   ------------------------------------------------------------------ */
+(() => {
+    const barre = document.querySelector('[data-filtre-galerie]');
+    const grille = document.getElementById('mas');
+    if (!barre || !grille) return;
+
+    const figures = [...grille.querySelectorAll('figure')];
+    const vide = document.getElementById('galerie-vide');
+
+    const appliquer = (categorie) => {
+        let visibles = 0;
+
+        for (const figure of figures) {
+            const garde = !categorie || figure.dataset.categorie === categorie;
+            figure.hidden = !garde;
+            if (garde) visibles++;
+        }
+
+        for (const lien of barre.querySelectorAll('a')) {
+            lien.setAttribute('aria-pressed', String(lien.dataset.categorie === categorie));
+        }
+
+        if (vide) vide.hidden = visibles > 0;
+    };
+
+    barre.addEventListener('click', (e) => {
+        const lien = e.target.closest('a[data-categorie]');
+        if (!lien || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+
+        e.preventDefault();
+        const categorie = lien.dataset.categorie;
+
+        appliquer(categorie);
+
+        /* L'adresse suit, pour que le filtre se partage et que le bouton
+           « precedent » du navigateur le defasse. */
+        history.pushState({ categorie }, '', lien.getAttribute('href'));
+    });
+
+    window.addEventListener('popstate', () => {
+        appliquer(new URL(location.href).searchParams.get('categorie') || '');
+    });
+})();

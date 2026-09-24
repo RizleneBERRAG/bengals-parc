@@ -50,6 +50,7 @@ class SyncPhotos extends Command
         $ordre = (int) Photo::max('ordre');
         $crees = 0;
         $majs  = 0;
+        $dimensions = 0;
 
         foreach ($fichiers as $fichier) {
             $base    = pathinfo($fichier, PATHINFO_FILENAME);
@@ -77,6 +78,16 @@ class SyncPhotos extends Command
                 continue;
             }
 
+            // Les photos d'avant l'ajout des dimensions n'en ont pas : on les
+            // releve ici. Le modele ne le fait qu'au changement de chemin.
+            if (blank($photo->largeur) || blank($photo->hauteur)) {
+                $taille = @getimagesize($fichier);
+                if ($taille !== false) {
+                    $photo->forceFill(['largeur' => $taille[0], 'hauteur' => $taille[1]])->save();
+                    $dimensions++;
+                }
+            }
+
             // --legendes : on réaligne les libellés connus, sans toucher au reste.
             if ($this->option('legendes') && isset(self::LEGENDES[$base])) {
                 $photo->update(['alt' => $legende, 'legende' => $legende, 'categorie' => $categorie]);
@@ -84,7 +95,7 @@ class SyncPhotos extends Command
             }
         }
 
-        $this->info("{$crees} photo(s) ajoutée(s), {$majs} mise(s) à jour. Galerie : ".Photo::count().' au total.');
+        $this->info("{$crees} photo(s) ajoutée(s), {$majs} mise(s) à jour, {$dimensions} dimension(s) relevée(s). Galerie : ".Photo::count().' au total.');
 
         return self::SUCCESS;
     }

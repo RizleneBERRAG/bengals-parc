@@ -17,6 +17,27 @@ class Photo extends Model
         ];
     }
 
+    /**
+     * Les dimensions sont relevees des que le chemin change — depot par le
+     * back-office comme passage de photos:sync. Elles servent a reserver la
+     * place dans la galerie : sans elles, la grille se reorganise a chaque
+     * image qui arrive.
+     */
+    protected static function booted(): void
+    {
+        static::saving(function (self $photo) {
+            if (! $photo->isDirty('chemin') || blank($photo->chemin)) {
+                return;
+            }
+
+            $fichier = public_path($photo->chemin);
+            $taille = is_file($fichier) ? @getimagesize($fichier) : false;
+
+            $photo->largeur = $taille[0] ?? null;
+            $photo->hauteur = $taille[1] ?? null;
+        });
+    }
+
     public function attachable(): MorphTo
     {
         return $this->morphTo();
