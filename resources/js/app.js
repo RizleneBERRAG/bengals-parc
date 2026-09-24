@@ -108,6 +108,17 @@ const ouvrir = (items, index) => {
             const b = ev.target.closest('[data-d]');
             if (b) deplacer(Number(b.dataset.d));
         });
+        /* Glissement du doigt : sur un telephone, personne ne cherche les
+           boutons. Seuil de 45 px pour ne pas confondre avec un appui. */
+        let departX = null;
+        lb.addEventListener('pointerdown', (ev) => { departX = ev.clientX; });
+        lb.addEventListener('pointerup', (ev) => {
+            if (departX === null) return;
+            const dx = ev.clientX - departX;
+            departX = null;
+            if (Math.abs(dx) > 45) deplacer(dx < 0 ? 1 : -1);
+        });
+
         document.addEventListener('keydown', (ev) => {
             if (!lb || lb.hidden) return;
             if (ev.key === 'Escape') fermer();
@@ -121,7 +132,12 @@ const ouvrir = (items, index) => {
     peindre();
 };
 
-const listeDe = (conteneur) => [...conteneur.querySelectorAll('[data-full]')];
+/* Les figures masquees par le filtre de la galerie ne doivent pas entrer dans
+   la visionneuse : sinon on filtre « Chatons » et les fleches font defiler les
+   trente-six photos. hidden couvre les deux cas — le masquage pose par le
+   serveur et celui applique par le filtre. */
+const listeDe = (conteneur) =>
+    [...conteneur.querySelectorAll('[data-full]')].filter((el) => !el.hidden);
 
 document.addEventListener('click', (e) => {
     // Galerie : on ouvre sur la vignette cliquee.

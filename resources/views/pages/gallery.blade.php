@@ -35,7 +35,12 @@
         <div class="masonry" id="mas" data-lightbox>
             @foreach($photos as $photo)
                 @php($cache = request('categorie') && request('categorie') !== $photo->categorie)
+                @php($ratio = $photo->largeur && $photo->hauteur ? $photo->largeur / $photo->hauteur : 1)
+                {{-- Au-dela de 1,6 une photo est nettement panoramique : elle traverse alors
+     toute la largeur au lieu de tenir dans une colonne. --}}
+                @php($format = $ratio > 1.6 ? 'panorama' : 'colonne')
                 <figure data-full="{{ asset($photo->chemin) }}" data-legende="{{ $photo->legende }}"
+                        data-format="{{ $format }}"                        style="--ratio:{{ round($ratio, 4) }}"
                         data-categorie="{{ $photo->categorie }}" @if($cache) hidden @endif>
                     {{--
                         width et height declares : sans eux le navigateur ne peut reserver
