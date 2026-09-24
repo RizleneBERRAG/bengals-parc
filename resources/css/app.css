@@ -586,6 +586,28 @@ footer h4{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transf
 footer ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
 footer a{color:var(--ivory-dim);text-decoration:none;font-size:.88rem;transition:color .25s}
 footer a:hover{color:var(--bronze-lt)}
+/* Le bloc de contact du pied : nomme et lisible, plutot que deux liens gris
+   au milieu des autres. Le numero en serif, comme un titre ; le courriel a la
+   taille du texte, il est trop long pour la colonne autrement. */
+.fcontact{display:flex;flex-direction:column;gap:13px;margin:6px 0 14px}
+.fcontact-item{display:flex;flex-direction:column;gap:5px;text-decoration:none}
+/* Le libelle reste gris : le bronze est deja pris par le titre de colonne
+   juste au-dessus, et deux libelles bronze l'un sur l'autre se disputent
+   la meme place dans la hierarchie. */
+.fcontact-item .k{font-family:var(--mono);font-size:8.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ivory-dim)}
+.fcontact-item .v{font-family:var(--display);font-size:1.2rem;color:var(--ivory);
+  line-height:1.15;transition:color .25s}
+.fcontact-item.mail .v{font-family:var(--body);font-size:.9rem;overflow-wrap:anywhere}
+.fcontact-item:hover .v,
+.fcontact-item:focus-visible .v{color:var(--bronze-lt)}
+
+/* Le numero et le courriel sont nommes juste au-dessus : les pastilles n'en
+   etaient que la redite. La rangee garde Instagram et TikTok, les deux seules
+   choses qu'elle apporte encore. */
+footer .socials .social--mail,
+footer .socials .social--tel{display:none}
+
 .fbot{margin-top:44px;padding-top:22px;border-top:1px solid var(--rule-ink);display:flex;flex-wrap:wrap;gap:12px 26px;
   justify-content:space-between;font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--ivory-dim)}
 
@@ -1214,11 +1236,6 @@ footer{view-transition-name:pied}
 
   footer h4{margin-bottom:6px}
 
-  /* Le numero et le courriel sont en toutes lettres juste au-dessus : les
-     pastilles n'en etaient que la redite. Instagram reste, il n'existe
-     nulle part ailleurs dans le pied. */
-  footer .socials .social--mail,
-  footer .socials .social--tel{display:none}
 
   .fbot{margin-top:30px}
 }

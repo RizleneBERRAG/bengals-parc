@@ -37,9 +37,21 @@
             </div>
             <div>
                 <h4>Contact</h4>
+                {{-- Le numero et le courriel etaient deux liens gris parmi
+                     quatorze autres, en bas d'un pied d'un ecran et demi : rien
+                     ne disait que c'est par la qu'on joint l'elevage. Ils sont
+                     maintenant nommes et lisibles. --}}
+                <div class="fcontact">
+                    <a class="fcontact-item" href="{{ \App\Models\Setting::telephoneLien() }}">
+                        <span class="k">Téléphone</span>
+                        <span class="v">{{ $tel }}</span>
+                    </a>
+                    <a class="fcontact-item mail" href="mailto:{{ $mail }}">
+                        <span class="k">Email</span>
+                        <span class="v">{{ $mail }}</span>
+                    </a>
+                </div>
                 <ul>
-                    <li><a href="{{ \App\Models\Setting::telephoneLien() }}">{{ $tel }}</a></li>
-                    <li><a href="mailto:{{ $mail }}">{{ $mail }}</a></li>
                     <li><a href="{{ route('contact') }}">Venir nous voir</a></li>
                 </ul>
                 <div class="socials" style="margin-top:20px">
