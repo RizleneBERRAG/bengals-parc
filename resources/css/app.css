@@ -902,3 +902,81 @@ footer{view-transition-name:pied}
 .viewer-vignette img{width:100%;height:100%;object-fit:cover}
 .viewer-vignette:hover{opacity:.85;border-color:var(--bronze-dim)}
 .viewer-vignette[aria-current="true"]{opacity:1;border-color:var(--bronze)}
+
+/* ==================================================================
+   Téléphone — l'échelle typographique
+
+   Mesuré à 375 px : le titre du hero tombait à 44,8 px, soit cinq lignes
+   et sept caractères par ligne ; le sur-titre s'étalait sur quatre lignes
+   à cause de son interlettrage ; et le hero atteignait 923 px de haut
+   pour un écran de 812, donc les boutons passaient sous la ligne de
+   flottaison. Sur un site dont la première page doit mener aux chatons,
+   c'est une conversion perdue.
+
+   Les bornes basses des clamp() étaient calées pour une tablette. On les
+   descend ici seulement — rien ne change au-dessus de 560 px.
+   ================================================================== */
+@media (max-width:560px){
+
+  .hero{min-height:auto;padding-block:34px 44px}
+
+  .hero h1{font-size:clamp(2rem,9.2vw,2.6rem);letter-spacing:-.018em;line-height:1.02}
+
+  /* L'interlettrage large est une signature de la charte, mais à 375 px il
+     fait passer le sur-titre de deux lignes à quatre. On le réduit sans le
+     supprimer. */
+  .hero .eyebrow{letter-spacing:.13em;line-height:1.5}
+
+  .hero .lede{font-size:.98rem;line-height:1.58;max-width:36ch}
+
+  /* Les deux boutons du hero côte à côte deviennent illisibles : chacun sur
+     sa ligne, pleine largeur, cible confortable. */
+  .hero .btnrow{flex-direction:column;align-items:stretch;gap:10px}
+  .hero .btnrow .btn{justify-content:center}
+
+  /* Marges laterales de bureau : elles volaient 52 px sur 331, et un libelle
+     comme « Voir les 2 chatons disponibles » passait sur deux lignes. Le texte
+     est centre aussi — sans cela ses lignes restent alignees a gauche dans un
+     bouton pourtant centre. */
+  .btn{padding:14px 18px;text-align:center}
+
+
+  /* Les titres de section suivaient la même échelle de tablette. */
+  .shead h1,.shead h2{font-size:clamp(1.75rem,7.4vw,2.4rem);line-height:1.08}
+  .shead .lede{font-size:.95rem;line-height:1.6}
+
+  /* Respiration verticale : les bandes prenaient une hauteur de bureau. */
+  .band{padding-block:clamp(44px,11vw,64px)}
+  .band.tight{padding-block:clamp(34px,8vw,48px)}
+}
+
+/* ------------------------------------------------------------------
+   Téléphone — le texte de lecture
+
+   Mesuré à 375 px : le corps de texte descendait entre 12,8 et 14,2 px
+   selon les blocs, quand le confort de lecture sur téléphone commence
+   vers 15. Vingt-quatre cellules sur la page des mentions légales,
+   dix-huit dans les cartes d'étapes.
+
+   Les étiquettes en mono à 9 px ne sont pas concernées : ce sont des
+   libellés de la charte, pas du texte qu'on lit.
+   ------------------------------------------------------------------ */
+@media (max-width:560px){
+  .record td{font-size:.96rem;line-height:1.55}
+  .cell-b p{font-size:.95rem;line-height:1.62}
+  .small{font-size:.92rem;line-height:1.6}
+  .cap{font-size:.92rem}
+  .bd dd{font-size:.94rem}
+  .note{font-size:.9rem;line-height:1.55}
+  .lede{font-size:.98rem;line-height:1.6}
+  .faq .ans{font-size:1rem;line-height:1.68}
+  /* .cap porte la taille mais c'est son paragraphe qui l'affiche. */
+  .cap,.cap p{font-size:.95rem;line-height:1.55}
+  /* .repro .cap est plus specifique que .cap : il faut l egaler. */
+  .repro .cap,.repro .cap p{font-size:.95rem;line-height:1.55}
+  .note,p.note{font-size:.95rem}
+  .lede,p.lede{font-size:.98rem}
+  .aside p{font-size:.95rem;line-height:1.6}
+  .mapnote{font-size:.9rem}
+
+}

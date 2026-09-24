@@ -269,7 +269,8 @@
                         <dd>{{ $repere['detail'] }}</dd>
                     @endforeach
                 </dl>
-                <p class="small" style="font-size:.78rem">
+                {{-- Taille laissee au CSS : ecrite ici, elle ne peut plus s'adapter au telephone. --}}
+                <p class="small mapnote">
                     Nous pouvons venir vous chercher à la gare de La Verpillière.
                 </p>
                 {{-- Visent la commune, pas l'adresse exacte : celle-ci n'est donnée
