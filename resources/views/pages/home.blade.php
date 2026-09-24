@@ -118,7 +118,9 @@
             titre="La {{ \Illuminate\Support\Str::lower($portee->code) }} est arrivée"
             lede="{{ $portee->nb_chatons }} chatons nés le {{ $portee->date_naissance->translatedFormat('j F Y') }} de {{ $portee->pere?->nom }} et {{ $portee->mere?->nom }}. Chaque chaton a sa fiche : robe, sexe, poids, numéro d'identification, suivi vétérinaire et statut mis à jour en direct." />
 
-        <div class="grid">
+        {{-- defile : sur telephone les fiches passent en rail horizontal plutot
+             que de s empiler sur cinq ecrans de haut. Voir app.css. --}}
+        <div class="grid defile" role="group" aria-label="Chatons de la portee">
             @foreach($chatons as $chaton)
                 <x-kitten-card :chaton="$chaton" />
             @endforeach

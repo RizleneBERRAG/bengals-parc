@@ -980,3 +980,39 @@ footer{view-transition-name:pied}
   .mapnote{font-size:.9rem}
 
 }
+
+/* ------------------------------------------------------------------
+   Téléphone — la portée en cours défile
+
+   Cinq fiches chaton empilées font cinq écrans de haut : on ne voit
+   jamais la portée d'un coup, et il faut défiler longtemps pour
+   atteindre la suite de la page. En rail horizontal, la portée tient
+   dans un geste.
+
+   Chaque fiche occupe 78 % de la largeur : la suivante dépasse
+   volontairement du bord, c'est ce qui indique qu'on peut faire glisser.
+   Le rail déborde dans les marges du conteneur pour que la première
+   fiche affleure le bord de l'écran plutôt que de flotter au milieu.
+
+   Les fiches sont des liens : la navigation au clavier les atteint et le
+   navigateur fait défiler le rail tout seul.
+   ------------------------------------------------------------------ */
+@media (max-width:560px){
+  .grid.defile{
+    display:flex;
+    gap:12px;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    overscroll-behavior-x:contain;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    margin-inline:-22px;
+    padding-inline:22px;
+    scroll-padding-inline:22px;
+    /* Les fiches se soulèvent au survol : sans cette marge, le mouvement
+       serait rogné par le débordement masqué du rail. */
+    padding-block:6px;
+  }
+  .grid.defile::-webkit-scrollbar{display:none}
+  .grid.defile > *{flex:0 0 78%;scroll-snap-align:start}
+}
